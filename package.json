@@ -3,17 +3,30 @@
   "version": "0.1.0",
   "description": "A chat client for kevs",
   "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "@commitlint/cz-commitlint": "^19.5.0",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.6",
+    "inquirer": "^9.3.6",
     "lint-staged": "^15.2.10"
   },
   "workspaces": [
     "./projects/client",
     "./projects/api"
   ],
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "prepare": "husky",
+    "commit": "cz"
   },
   "author": "Kevin McCartney",
-  "license": "MIT"
+  "license": "MIT",
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  }
 }
