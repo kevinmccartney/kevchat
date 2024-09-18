@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "streetsidesoftware.code-spell-checker",
+    "esbenp.prettier-vscode",
+    "nhoizey.gremlins",
+    "gruntfuggly.todo-tree",
+    "bradlc.vscode-tailwindcss",
+    "stivo.tailwind-fold",
+    "hediet.vscode-drawio",
+    "christian-kohler.path-intellisense"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "kev-chat",
+  "version": "0.1.0",
+  "description": "A chat client for kevs",
+  "devDependencies": {
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10"
+  },
+  "workspaces": [
+    "./projects/client",
+    "./projects/api"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "author": "Kevin McCartney",
+  "license": "MIT"
+}
