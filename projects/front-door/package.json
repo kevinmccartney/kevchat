@@ -1,18 +1,17 @@
 {
-  "name": "kevchat-client",
-  "version": "0.1.1",
+  "name": "kevchat-front-door",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 8080",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 8080",
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "14.2.12",
+    "next": "14.2.13",
     "react": "^18",
-    "react-dom": "^18",
-    "sharp": "^0.33.5"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.15",
@@ -21,10 +20,8 @@
     "@types/react-dom": "^18",
     "daisyui": "^4.12.10",
     "eslint": "^8",
-    "eslint-config-next": "14.2.12",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-next": "14.2.13",
     "postcss": "^8",
-    "prettier": "^3.3.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

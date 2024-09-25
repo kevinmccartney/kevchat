@@ -1,4 +1,22 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "encrypted-tbn3.gstatic.com",
+        port: "",
+        pathname: "/images/**",
+      },
+      {
+        protocol: "https",
+        hostname: "media.licdn.com",
+        port: "",
+        pathname: "/dms/**",
+      },
+    ],
+  },
+  output: "standalone",
+};
 
 export default nextConfig;

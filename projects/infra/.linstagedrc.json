@@ -1,0 +1,4 @@
+{
+  "*.tf": "tflint && terraform fmt",
+  "*.{md,json}": "prettier --write"
+}
