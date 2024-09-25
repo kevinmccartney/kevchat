@@ -91,3 +91,16 @@ resource "aws_acm_certificate" "kevchat" {
     create_before_destroy = true
   }
 }
+
+# allows access from ALB to s3 hosting front door
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_default_vpc.default.id
+  service_name      = "com.amazonaws.us-east-2.s3"
+  vpc_endpoint_type = "Interface"
+  subnet_ids = [
+    aws_default_subnet.us_east_2a.id,
+    aws_default_subnet.us_east_2b.id,
+    aws_default_subnet.us_east_2c.id
+  ]
+  security_group_ids = [aws_security_group.kevchat_backend.id]
+}

@@ -24,6 +24,7 @@
 - [ ] Go through Terraform resources to see if I need to add any non-default properties
 - [ ] Scan docker container/optimize size
 - [ ] Do I need to be pointing to the dualstack ALB domains for the A records? (it does this when you configure thru the UI)
+- [ ] Can we have the ALB redirect strip the index.html off of the url?
 
 ## Tasks
 
@@ -42,12 +43,15 @@
 - [x] Figure out ALB auth
 - [x] Put API behind auth
 - [x] Write front door
-- [ ] Deploy front door
+- [x] Deploy front door
+- [x] Write landing page
+- [x] Refine ALB auth
+- [ ] Deploy mongo atlas
 - [ ] Write profile API
 - [ ] Write chat websocket API
-- [ ] Refine ALB auth
-- [ ] Write landing page
-- [ ] Write stuff for email confirmation
+- [ ] Write stuff for email confirmation of Cognito accounts
 - [ ] Fix CSS layout :(
+- [ ] Allow logout
+
 - [ ] Switch favicon for light mode
-- [ ] Custom OAuth auth page
+- [ ] Custom OAuth login page

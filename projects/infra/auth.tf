@@ -36,5 +36,5 @@ resource "aws_cognito_user_pool_client" "client" {
   allowed_oauth_flows                  = ["code", "implicit"]
   allowed_oauth_scopes                 = ["email", "openid"]
   supported_identity_providers         = ["COGNITO"]
-  callback_urls = ["https://kev.chat/oauth2/idpresponse", "https://api.kev.chat/oauth2/idpresponse"]
+  callback_urls                        = ["https://app.kev.chat/oauth2/idpresponse", "https://api.kev.chat/oauth2/idpresponse"]
 }

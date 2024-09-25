@@ -34,22 +34,42 @@ resource "aws_lb_target_group" "kevchat_api" {
   }
 }
 
+resource "aws_lb_target_group" "kevchat_front_door" {
+  name        = "kevchat-front-door"
+  port        = 443
+  protocol    = "HTTPS"
+  vpc_id      = aws_default_vpc.default.id
+  target_type = "ip"
+
+  health_check {
+    path     = "/index.html"
+    protocol = "HTTPS"
+    matcher  = "200,307"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+data "aws_network_interface" "s3_vpce_endpoints" {
+  for_each = aws_vpc_endpoint.s3.network_interface_ids
+  id       = each.value
+}
+
+resource "aws_lb_target_group_attachment" "kevchat_front_door" {
+  for_each         = data.aws_network_interface.s3_vpce_endpoints
+  target_group_arn = aws_lb_target_group.kevchat_front_door.arn
+  target_id        = each.value.private_ip
+  port             = 443
+}
+
 resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.kevchat.arn
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
   certificate_arn   = aws_acm_certificate.kevchat.arn
-
-  default_action {
-    type = "authenticate-cognito"
-
-    authenticate_cognito {
-      user_pool_arn       = aws_cognito_user_pool.kevchat.arn
-      user_pool_client_id = aws_cognito_user_pool_client.client.id
-      user_pool_domain    = aws_cognito_user_pool_domain.kevchat.domain
-    }
-  }
 
   default_action {
     type = "forward"
@@ -60,7 +80,7 @@ resource "aws_lb_listener" "https" {
         enabled  = false
       }
       target_group {
-        arn    = aws_lb_target_group.kevchat_client.arn
+        arn    = aws_lb_target_group.kevchat_front_door.arn
         weight = 1
       }
     }
@@ -116,6 +136,41 @@ resource "aws_lb_listener_rule" "kevchat_api" {
   condition {
     host_header {
       values = ["api.kev.chat"]
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "kevchat_client" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 2
+
+  action {
+    type = "authenticate-cognito"
+
+    authenticate_cognito {
+      user_pool_arn       = aws_cognito_user_pool.kevchat.arn
+      user_pool_client_id = aws_cognito_user_pool_client.client.id
+      user_pool_domain    = aws_cognito_user_pool_domain.kevchat.domain
+    }
+  }
+
+  action {
+    type = "forward"
+
+    forward {
+      stickiness {
+        duration = 3600
+      }
+
+      target_group {
+        arn = aws_lb_target_group.kevchat_client.arn
+      }
+    }
+  }
+
+  condition {
+    host_header {
+      values = ["app.kev.chat"]
     }
   }
 }

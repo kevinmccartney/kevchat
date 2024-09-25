@@ -1,6 +1,11 @@
+import { Metadata } from "next";
 import Footer from "./common/Footer";
 import Header from "./common/Header";
 import { CONFIG } from "./config";
+
+export const metadata: Metadata = {
+  title: "KevChat | A chat for Kevins!",
+};
 
 export default function Home() {
   return (
