@@ -1,0 +1,15 @@
+name: kevchat
+
+services:
+  kevchat_client:
+    build:
+      context: .
+      dockerfile: projects/client/Dockerfile
+      args:
+        KEVCHAT_API_URL: http://api.kev.chat
+        KEVCHAT_CLIENT_URL: http://app.kev.chat
+        KEVCHAT_FRONT_DOOR_URL: http://kev.chat
+        KEVCHAT_LOGOUT_URL: https://kevchat.auth.us-east-2.amazoncognito.com/logout?logout_uri=https%3A%2F%2Fkev.chat&client_id=1g2fva2c3i0e2sdkumksmv7m8
+    image: kevchat_client:0.4.0
+    ports:
+      - "3000:3000"

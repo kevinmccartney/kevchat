@@ -66,8 +66,8 @@ resource "aws_ecs_task_definition" "kevchat_api" {
     operating_system_family = "LINUX"
   }
 
-  memory             = "4096"
-  cpu                = "1024"
+  memory             = "1024"
+  cpu                = "512"
   family             = "kevchat_api"
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
   skip_destroy       = false

@@ -17,6 +17,10 @@ resource "aws_lb_target_group" "kevchat_client" {
   vpc_id      = aws_default_vpc.default.id
   target_type = "ip"
 
+  health_check {
+    path = "/healthz"
+  }
+
   lifecycle {
     create_before_destroy = true
   }
@@ -28,6 +32,10 @@ resource "aws_lb_target_group" "kevchat_api" {
   protocol    = "HTTP"
   vpc_id      = aws_default_vpc.default.id
   target_type = "ip"
+
+  health_check {
+    path = "/healthz"
+  }
 
   lifecycle {
     create_before_destroy = true
@@ -44,7 +52,7 @@ resource "aws_lb_target_group" "kevchat_front_door" {
   health_check {
     path     = "/index.html"
     protocol = "HTTPS"
-    matcher  = "200,307"
+    matcher  = "200,307,301"
   }
 
   lifecycle {
@@ -171,6 +179,32 @@ resource "aws_lb_listener_rule" "kevchat_client" {
   condition {
     host_header {
       values = ["app.kev.chat"]
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "kevchat_front_door_redirect" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 3
+
+  action {
+    type = "redirect"
+
+    redirect {
+      path        = "/index.html"
+      status_code = "HTTP_301"
+    }
+  }
+
+  condition {
+    host_header {
+      values = ["kev.chat"]
+    }
+  }
+
+  condition {
+    path_pattern {
+      values = ["/"]
     }
   }
 }

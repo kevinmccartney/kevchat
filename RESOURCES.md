@@ -15,3 +15,4 @@
 - https://stackoverflow.com/a/77240947/25751385
 - https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-page-redirect.html
 - https://aws.amazon.com/fr/blogs/networking-and-content-delivery/hosting-internal-https-static-websites-with-alb-s3-and-privatelink/
+- https://stackoverflow.com/a/48833083/25751385

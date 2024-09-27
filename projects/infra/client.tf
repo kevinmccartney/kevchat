@@ -25,7 +25,7 @@ resource "aws_ecr_repository" "kevchat_client" {
 
 data "aws_ecr_image" "kevchat_client" {
   repository_name = "kevchat_client"
-  image_tag       = "0.2.0"
+  image_tag       = "0.4.0"
 }
 
 resource "aws_ecs_task_definition" "kevchat_client" {
@@ -66,8 +66,8 @@ resource "aws_ecs_task_definition" "kevchat_client" {
     operating_system_family = "LINUX"
   }
 
-  memory             = "4096"
-  cpu                = "1024"
+  memory             = "1024"
+  cpu                = "512"
   family             = "kevchat_client"
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
   skip_destroy       = false

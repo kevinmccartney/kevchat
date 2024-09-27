@@ -38,7 +38,7 @@ export default function Header() {
                 <a href="/profile">Profile</a>
               </li>
               <li className="mb-2">
-                <a>Log out</a>
+                <a href="/logout">Log out</a>
               </li>
               <li className="">
                 <ThemeToggle />

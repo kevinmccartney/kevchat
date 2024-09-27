@@ -27,6 +27,7 @@ resource "aws_cognito_user_pool_domain" "kevchat" {
   user_pool_id = aws_cognito_user_pool.kevchat.id
 }
 
+# add logout URL and redirects
 resource "aws_cognito_user_pool_client" "client" {
   name = "kevchat_client"
 

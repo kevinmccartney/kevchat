@@ -25,6 +25,7 @@
 - [ ] Scan docker container/optimize size
 - [ ] Do I need to be pointing to the dualstack ALB domains for the A records? (it does this when you configure thru the UI)
 - [ ] Can we have the ALB redirect strip the index.html off of the url?
+- [ ] Is there a better way to do env vars for next?
 
 ## Tasks
 
@@ -46,12 +47,16 @@
 - [x] Deploy front door
 - [x] Write landing page
 - [x] Refine ALB auth
+- [x] Allow logout
 - [ ] Deploy mongo atlas
 - [ ] Write profile API
+- [ ] Fix CSS layout :(
 - [ ] Write chat websocket API
 - [ ] Write stuff for email confirmation of Cognito accounts
-- [ ] Fix CSS layout :(
-- [ ] Allow logout
 
 - [ ] Switch favicon for light mode
 - [ ] Custom OAuth login page
+
+https://kevchat.auth.us-east-2.amazoncognito.com/logout?logout_uri=https%3A%2F%2Fkev.chat&client_id=1g2fva2c3i0e2sdkumksmv7m8
+
+gci env:\* | sort-object name

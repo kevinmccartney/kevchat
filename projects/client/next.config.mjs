@@ -16,6 +16,9 @@ const nextConfig = {
       },
     ],
   },
+  compiler: {
+    removeConsole: false,
+  },
   output: "standalone",
 };
 
