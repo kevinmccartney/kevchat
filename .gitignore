@@ -1,1 +1,4 @@
 node_modules
+# ignore local mongoDB data
+data
+.env

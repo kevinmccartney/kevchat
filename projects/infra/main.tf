@@ -1,13 +1,18 @@
 terraform {
-  required_version = "~> 1.9.6"
+  required_version = "> 1.9.6"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.68.0"
     }
     mongodbatlas = {
-      source = "mongodb/mongodbatlas"
+      source  = "mongodb/mongodbatlas"
       version = "~> 1.20.0"
+    }
+
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.6.3"
     }
   }
 
@@ -30,19 +35,6 @@ provider "aws" {
 }
 
 provider "mongodbatlas" {
-  public_key = var.mongodbatlas_public_key
-  private_key  = var.mongodbatlas_private_key
+  public_key  = var.mongodbatlas_public_key
+  private_key = var.mongodbatlas_private_key
 }
-
-variable "mongodbatlas_public_key" {
-  type = string
-  sensitive = true
-  nullable = false
-}
-
-variable "mongodbatlas_private_key" {
-  type = string
-  sensitive = true
-  nullable = false
-}
-

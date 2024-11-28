@@ -1,23 +1,23 @@
 {
   "folders": [
     {
-      "path": ".",
+      "path": "."
     },
     {
-      "path": "projects/api",
+      "path": "projects/api"
     },
     {
-      "path": "projects/client",
+      "path": "projects/client"
     },
     {
-      "path": "projects/infra",
+      "path": "projects/infra"
     },
     {
-      "path": "projects/local-proxy",
+      "path": "projects/local-proxy"
     },
     {
-      "path": "projects/front-door",
-    },
+      "path": "projects/front-door"
+    }
   ],
   "settings": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -25,9 +25,9 @@
     "cSpell.words": ["healthz", "lintstagedrc", "daisyui", "tailwindcss"],
     "editor.linkedEditing": true,
     "[terraform]": {
-      "editor.defaultFormatter": "hashicorp.terraform",
+      "editor.defaultFormatter": "hashicorp.terraform"
     },
-    "files.eol": "\n",
+    "files.eol": "\n"
   },
   "extensions": {
     "recommendations": [
@@ -37,11 +37,10 @@
       "nhoizey.gremlins",
       "gruntfuggly.todo-tree",
       "bradlc.vscode-tailwindcss",
-      "stivo.tailwind-fold",
       "hediet.vscode-drawio",
       "christian-kohler.path-intellisense",
       "hashicorp.hcl",
-      "hashicorp.terraform",
-    ],
-  },
+      "hashicorp.terraform"
+    ]
+  }
 }

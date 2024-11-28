@@ -14,6 +14,7 @@
 ## DevEx/Tech Debt
 
 - [x] TF format/lint hooks & (VS Code integration)
+- [x] Write docker compose for local env
 - [ ] Use private IPs for ECS services (set up VPC gateway for ECR)
 - [ ] Eslint sort imports into groups
 - [ ] Rework AWS CLI credentials (that terraform will use) to not use long-term credentials (API keys)
@@ -26,6 +27,9 @@
 - [ ] Do I need to be pointing to the dualstack ALB domains for the A records? (it does this when you configure thru the UI)
 - [ ] Can we have the ALB redirect strip the index.html off of the url?
 - [ ] Is there a better way to do env vars for next?
+- [ ] Set up private connectivity for Mongo Atlas
+- [ ] Add Mongo Atlas IP allow lists to TF (?)
+- [ ] Make HMR work on local domains
 
 ## Tasks
 
@@ -48,7 +52,9 @@
 - [x] Write landing page
 - [x] Refine ALB auth
 - [x] Allow logout
-- [ ] Deploy mongo atlas
+- [x] Deploy mongo atlas
+- [x] Make sure I can debug
+- [ ] Release new API & Client images
 - [ ] Write profile API
 - [ ] Fix CSS layout :(
 - [ ] Write chat websocket API
@@ -56,7 +62,4 @@
 
 - [ ] Switch favicon for light mode
 - [ ] Custom OAuth login page
-
-https://kevchat.auth.us-east-2.amazoncognito.com/logout?logout_uri=https%3A%2F%2Fkev.chat&client_id=1g2fva2c3i0e2sdkumksmv7m8
-
-gci env:\* | sort-object name
+- [ ] Add link to NextJS issue re inspect port & patch

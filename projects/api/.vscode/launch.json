@@ -3,16 +3,13 @@
   "configurations": [
     {
       "name": "Debug attach",
-      "port": 9230,
+      "port": 9229,
       "address": "0.0.0.0",
       "request": "attach",
       "skipFiles": ["<node_internals>/**"],
       "type": "node",
       "remoteRoot": "/app",
-      "localRoot": "${workspaceFolder}",
-      "sourceMapPathOverrides": {
-        "webpack://_N_E/*": "${webRoot}/*"
-      }
+      "localRoot": "${workspaceFolder}"
     }
   ]
 }

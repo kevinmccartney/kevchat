@@ -25,7 +25,7 @@ resource "aws_ecr_repository" "kevchat_client" {
 
 data "aws_ecr_image" "kevchat_client" {
   repository_name = "kevchat_client"
-  image_tag       = "0.4.0"
+  image_tag       = "0.5.0"
 }
 
 resource "aws_ecs_task_definition" "kevchat_client" {

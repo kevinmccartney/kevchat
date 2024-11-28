@@ -25,7 +25,7 @@ resource "aws_ecr_repository" "kevchat_api" {
 
 data "aws_ecr_image" "kevchat_api" {
   repository_name = "kevchat_api"
-  image_tag       = "0.2.0"
+  image_tag       = "0.3.0"
 }
 
 resource "aws_ecs_task_definition" "kevchat_api" {

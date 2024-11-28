@@ -1,0 +1,16 @@
+diff --git a/node_modules/next/dist/cli/next-dev.js b/node_modules/next/dist/cli/next-dev.js
+index f7a7240..edb4fd5 100644
+--- a/node_modules/next/dist/cli/next-dev.js
++++ b/node_modules/next/dist/cli/next-dev.js
+@@ -208,7 +208,10 @@ const nextDev = async (options, portSource, directory)=>{
+                 NODE_OPTIONS = `${NODE_OPTIONS} --max-old-space-size=${Math.floor(totalMemInMB * 0.5)}`;
+             }
+             if (nodeDebugType) {
+-                NODE_OPTIONS = `${NODE_OPTIONS} --${nodeDebugType}=${(0, _utils.getDebugPort)() + 1}`;
++                // the debugger needs to be listening on all network interfaces to work in a container
++                // this also allows the user to connect from their host machine
++                NODE_OPTIONS = `${NODE_OPTIONS} --${nodeDebugType}=0.0.0.0:${(0, _utils.getDebugPort)() + 1}`;
++                console.log(NODE_OPTIONS);
+             }
+             child = (0, _child_process.fork)(startServerPath, {
+                 stdio: "inherit",

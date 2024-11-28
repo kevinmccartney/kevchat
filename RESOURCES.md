@@ -16,3 +16,8 @@
 - https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-page-redirect.html
 - https://aws.amazon.com/fr/blogs/networking-and-content-delivery/hosting-internal-https-static-websites-with-alb-s3-and-privatelink/
 - https://stackoverflow.com/a/48833083/25751385
+- https://www.mongodb.com/developer/products/atlas/deploy-mongodb-atlas-terraform-aws/#step-13--set-up-a-private-endpoint-to-your-mongodb-atlas-cluster
+- https://github.com/Zuhairahmed/Deploy-MongoDB-Atlas-using-Terraform-Demo
+- https://www.mongodb.com/resources/products/compatibilities/docker
+- https://medium.com/@elifront/best-next-js-docker-compose-hot-reload-production-ready-docker-setup-28a9125ba1dc
+- https://stackoverflow.com/a/68052600/25751385
