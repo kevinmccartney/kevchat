@@ -4,12 +4,10 @@ FROM node:22
 ARG KEVCHAT_API_URL
 ARG KEVCHAT_CLIENT_URL
 ARG KEVCHAT_FRONT_DOOR_URL
-ARG KEVCHAT_LOGOUT_URL
 
 ENV NEXT_PUBLIC_KEVCHAT_API_URL=${KEVCHAT_API_URL}
 ENV NEXT_PUBLIC_KEVCHAT_CLIENT_URL=${KEVCHAT_CLIENT_URL}
 ENV NEXT_PUBLIC_KEVCHAT_FRONT_DOOR_URL=${KEVCHAT_FRONT_DOOR_URL}
-ENV NEXT_PUBLIC_KEVCHAT_LOGOUT_URL=${KEVCHAT_LOGOUT_URL}
 ENV WATCHPACK_POLLING=true
 
 # Create app directory
@@ -17,15 +15,8 @@ WORKDIR /app
 
 COPY projects/client/package.json package-lock.json ./
 
-# bring in the patches
-COPY projects/client/patches ./patches
-
-RUN ls ./patches
-
 # Install app dependencies
 RUN npm i
-
-RUN npm run postinstall
 
 # Bundle app source
 COPY ./projects/client .

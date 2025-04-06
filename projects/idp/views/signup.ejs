@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
+
+    <link href="/app.css" rel="stylesheet" type="text/css" />
+
+    <title>KevChat Identity | Signup</title>
+  </head>
+  <body>
+    <div
+      class="h-full w-full flex flex-col justify-center items-center bg-base-300"
+    >
+      <article class="prose">
+        <h1 class="text-center">KevChat Identity</h1>
+        <div class="card card-dash bg-base-100">
+          <div class="card-body">
+            <h2 class="mt-0 mb-3">Create Account</h2>
+            <form class="flex flex-col gap-4" id="signUpForm">
+              <div class="flex gap-4">
+                <input type="text" name="firstName" placeholder="First Name" class="input" id="firstName"/>
+                <input type="text" name="lastName" placeholder="Last Name" class="input" id="lastName" />
+              </div>
+              <div class="flex flex-col gap-4">
+                <input
+                  type="text"
+                  placeholder="Username"
+                  class="input w-full"
+                  id="username"
+                  name="username"
+                />
+                <input name="email" type="text" placeholder="Email" id="email" class="input w-full" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  class="input w-full"
+                  id="password"
+                  name="password"
+                />
+              </div>
+              <div role="alert" class="alert alert-error alert-soft hidden" id="errorMessage">
+                <span class="whitespace-pre-line"></span>
+              </div>
+              <div class="flex mt-4 gap-4 justify-end">
+                <% if (cancelRedirectUrl) { %>
+                  <a
+                    href="<%= cancelRedirectUrl %>"
+                    class="btn btn-outline btn-accent"
+                  >
+                    Cancel
+                  </a>
+                <% } %>
+                <button type="submit"class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </article>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("signUpForm");
+        const errorMessageElement = document.getElementById("errorMessage");
+        const errorMessageSpan = errorMessageElement.querySelector("span");
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            errorMessageElement.classList.add("hidden");
+            
+            const fieldIdLabelMap = {
+                firstName: "First Name",
+                lastName: "Last Name",
+                username: "Username",
+                email: "Email",
+                password: "Password"
+            };
+            const formData = new FormData(form);
+            const jsonData = Object.fromEntries(formData.entries());
+
+            const missingFields = Object.keys(jsonData).filter(
+                (key) => !jsonData[key] || jsonData[key].trim() === ""
+            ).map((key) => {
+                // Map the key to a user-friendly label
+                return fieldIdLabelMap[key];
+            });
+
+            if (missingFields.length > 0) {
+              errorMessageElement.classList.remove("hidden");
+              errorMessageSpan.textContent = `Please fill in the following fields: ${missingFields.join(", ")}`;
+
+              return;
+            }
+            // Validate email format
+            if (jsonData.email && !validator.isEmail(jsonData.email)) {
+                errorMessageElement.classList.remove("hidden");
+                errorMessageSpan.textContent = 'Please enter a valid email address.';
+                
+                return;
+            }
+            // Validate password (example: at least 8 characters)
+            if (jsonData.password && !validator.isStrongPassword(jsonData.password)) {
+                errorMessageElement.classList.remove("hidden");
+                errorMessageSpan.textContent = 'Please enter a strong password. \n\nIt should be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one number, and one symbol.';
+                
+                return;
+            }
+
+            try {
+                const response = await fetch("/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(jsonData),
+                });
+
+                const responseJson = await response.json();
+
+                // 400 (username exists)
+                if (!response.ok) {
+                    errorMessageElement.classList.remove("hidden");
+                    errorMessageSpan.textContent = responseJson.error;                    
+
+                    return;
+                }
+
+                // 500 (server error)
+                if (!response.ok) {
+                    errorMessageElement.classList.remove("hidden");
+                    errorMessageSpan.textContent = 'Internal Server Error. Please try again later.';                
+
+                    return;
+                }
+
+                form.reset();
+
+                window.location.href = "<%= successRedirectUrl %>";
+            } catch (error) {
+                errorMessageElement.classList.remove("hidden");
+                errorMessageSpan.textContent = 'Error submitting form. Please try again.';
+            }
+        });
+    });
+    </script>
+  </body>
+</html>

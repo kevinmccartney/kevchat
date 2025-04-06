@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug attach",
+      "port": 9232,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "remoteRoot": "/app",
+      "localRoot": "${workspaceFolder}",
+      "restart": {
+        "maxAttempts": 5,
+        "delay": 1000
+      }
+    }
+  ]
+}

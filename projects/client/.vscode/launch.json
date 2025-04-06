@@ -2,17 +2,24 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug attach",
+      "name": "Debug attach (9229)",
+      "port": 9229,
+      "address": "0.0.0.0",
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "remoteRoot": "/app",
+      "localRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug attach (9230)",
       "port": 9230,
       "address": "0.0.0.0",
       "request": "attach",
       "skipFiles": ["<node_internals>/**"],
       "type": "node",
       "remoteRoot": "/app",
-      "localRoot": "${workspaceFolder}",
-      "sourceMapPathOverrides": {
-        "webpack://_N_E/*": "${webRoot}/*"
-      }
+      "localRoot": "${workspaceFolder}"
     }
   ]
 }

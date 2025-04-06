@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
+
+    <link href="/app.css" rel="stylesheet" type="text/css" />
+
+    <title>KevChat Identity | Login</title>
+  </head>
+  <body>
+    <div
+      class="h-full w-full flex flex-col justify-center items-center bg-base-300"
+    >
+      <article class="prose">
+        <h1 class="text-center">KevChat Identity</h1>
+        <div class="card card-dash bg-base-100">
+          <div class="card-body">
+            <h2 class="mt-0 mb-3">Login</h2>
+            <form action="/interaction/<%= uid %>/login" method="post" class="flex flex-col gap-4" id="loginForm">
+              <div class="flex flex-col gap-4">
+                <input
+                  type="text"
+                  placeholder="Username"
+                  class="input w-full"
+                  id="username"
+                  name="username"
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  class="input w-full"
+                  id="password"
+                  name="password"
+                />
+              </div>
+              <% if(!!errorMessage) { %>
+                <div role="alert" class="alert alert-error alert-soft" id="errorMessage">
+                  <span class="whitespace-pre-line"><%= errorMessage  %></span>
+                </div>
+              <% } %>
+              <div class="flex mt-4 gap-4 justify-end">
+                <% if (typeof cancelRedirectUrl !== 'undefined') { %>
+                  <a
+                    href="<%= cancelRedirectUrl %>"
+                    class="btn btn-outline btn-accent"
+                  >
+                    Cancel
+                  </a>
+                <% } %>
+                <button type="submit"class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </article>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("loginForm");
+        const inputs = form.querySelectorAll('input');
+        
+        for(let input of inputs) {
+          input.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault(); // prevent form submission on enter
+        
+              if (form) {
+                form.submit();
+              }
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

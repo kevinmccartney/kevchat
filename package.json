@@ -14,7 +14,9 @@
   },
   "workspaces": [
     "./projects/client",
-    "./projects/api"
+    "./projects/api",
+    "./projects/front-door",
+    "./projects/idp"
   ],
   "type": "module",
   "scripts": {

@@ -1,0 +1,22 @@
+# Base image
+FROM node:22
+
+# Create app directory
+WORKDIR /app
+
+COPY projects/idp/package.json package-lock.json ./
+
+# Install app dependencies
+RUN npm i
+
+# Bundle app source
+COPY ./projects/idp .
+
+# Expose the port on which the app will run
+EXPOSE 4000
+
+# Expose debug port
+EXPOSE 9231
+
+# Start the server using the debug build
+CMD ["npm", "run", "start:debug"]

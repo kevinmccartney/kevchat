@@ -3,33 +3,38 @@
   "version": "0.3.1",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' next dev",
+    "dev": "node --inspect=0.0.0.0:${KEVCHAT_CLIENT_DEBUG_PORT_PRIMARY} node_modules/next/dist/bin/next dev -p ${KEVCHAT_CLIENT_PORT} --turbopack",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "postinstall": "patch-package"
+    "start": "next start -p ${KEVCHAT_CLIENT_PORT}",
+    "lint": "next lint"
   },
   "dependencies": {
-    "next": "14.2.12",
+    "cookie": "^1.0.2",
+    "next": "15.2.4",
     "patch-package": "^8.0.0",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "sharp": "^0.33.5",
     "winston": "^3.14.2"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.15",
+    "@types/cookie": "^0.6.0",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "19.0.12",
+    "@types/react-dom": "19.0.4",
     "cross-env": "^7.0.3",
     "daisyui": "^4.12.10",
     "eslint": "^8",
-    "eslint-config-next": "14.2.12",
+    "eslint-config-next": "15.2.4",
     "eslint-config-prettier": "^9.1.0",
     "postcss": "^8",
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@types/react": "19.0.12",
+    "@types/react-dom": "19.0.4"
   }
 }

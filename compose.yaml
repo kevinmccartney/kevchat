@@ -4,15 +4,202 @@ services:
   kevchat_client:
     build:
       context: .
-      dockerfile: projects/client/Dockerfile
+      dockerfile: projects/client/Dockerfile-local
       args:
-        KEVCHAT_API_URL: https://api.kev.chat
-        KEVCHAT_CLIENT_URL: https://app.kev.chat
-        KEVCHAT_FRONT_DOOR_URL: https://kev.chat
-        KEVCHAT_LOGOUT_URL: https://kevchat.auth.us-east-2.amazoncognito.com/logout?logout_uri=https%3A%2F%2Fkev.chat&client_id=1g2fva2c3i0e2sdkumksmv7m8
-    image: kevchat_client:0.5.0
+        KEVCHAT_API_URL: ${KEVCHAT_API_URL}
+        KEVCHAT_CLIENT_URL: ${KEVCHAT_CLIENT_URL}
+        KEVCHAT_FRONT_DOOR_URL: ${KEVCHAT_FRONT_DOOR_URL}
+    image: kevchat_client:${KEVCHAT_ENV}
+    environment:
+      - KEVCHAT_CLIENT_PORT=${KEVCHAT_CLIENT_PORT}
+      - KEVCHAT_CLIENT_LOGIN_URL=${KEVCHAT_CLIENT_LOGIN_URL}
+      - KEVCHAT_CLIENT_LOGOUT_URL=${KEVCHAT_CLIENT_LOGOUT_URL}
+      - KEVCHAT_FRONT_DOOR_URL=${KEVCHAT_FRONT_DOOR_URL}
+      - KEVCHAT_CLIENT_AUTH_LOGIN_CALLBACK_URL=${KEVCHAT_CLIENT_AUTH_LOGIN_CALLBACK_URL}
+      - KEVCHAT_CLIENT_URL=${KEVCHAT_CLIENT_URL}
+      - KEVCHAT_IDP_OIDC_TOKEN_URL=${KEVCHAT_IDP_OIDC_TOKEN_URL}
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          "sh -c 'until curl -f ${KEVCHAT_CLIENT_INTERNAL_HOST}:${KEVCHAT_CLIENT_PORT}/healthz; do sleep 1; done;'",
+        ]
+      start_period: 30s
+      start_interval: 5s
+    ports:
+      - ${KEVCHAT_CLIENT_DEBUG_PORT_PRIMARY}:${KEVCHAT_CLIENT_DEBUG_PORT_PRIMARY} 
+      - ${KEVCHAT_CLIENT_DEBUG_PORT_SECONDARY}:${KEVCHAT_CLIENT_DEBUG_PORT_SECONDARY}
+    volumes:
+      - type: bind
+        source: ./projects/client/src
+        target: /app/src
+      - type: bind
+        source: ./projects/client/.next
+        target: /app/.next
+  mongodb:
+    build:
+      context: .
+      dockerfile: Mongo.Dockerfile
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_PORT=${MONGO_PORT}
+    ports:
+      - ${MONGO_PORT}:${MONGO_PORT}
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data/db
+    healthcheck:
+      test:
+        ['CMD-SHELL', "sh -c 'until nc -z mongodb ${MONGO_PORT}; do sleep 1; done;'"]
+      start_period: 30s
+      start_interval: 5s
+  init_mongodb:
+    image: mongo:8.0.6
+    depends_on:
+      mongodb:
+        restart: true
+        condition: service_healthy
+    # command: tail -f /dev/null
+    command: mongosh "mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:${MONGO_PORT}/admin" -f /app/initMongo.js
+    environment:
+      - MONGO_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_PORT=${MONGO_PORT}
+      - DB_API_USERNAME=${DB_API_USERNAME}
+      - DB_API_PASSWORD=${DB_API_PASSWORD}
+      - DB_IDP_USERNAME=${DB_IDP_USERNAME}
+      - DB_IDP_PASSWORD=${DB_IDP_PASSWORD}
+      - DB_APP_NAME=${DB_APP_NAME}
+      - DB_IDP_NAME=${DB_IDP_NAME}
+    volumes:
+      - type: bind
+        source: ./projects/scripts
+        target: /app
   kevchat_api:
     build:
       context: .
-      dockerfile: projects/api/Dockerfile
-    image: kevchat_api:0.3.0
+      dockerfile: projects/api/Dockerfile-local
+    image: kevchat_api:${KEVCHAT_ENV}
+    ports:
+      - ${KEVCHAT_API_DEBUG_PORT}:${KEVCHAT_API_DEBUG_PORT}
+    environment:
+      - MONGO_CONNECTION_STRING=mongodb://${DB_API_USERNAME}:${DB_API_PASSWORD}@mongodb:${MONGO_PORT}/${DB_APP_NAME}
+      - KEVCHAT_API_PORT=${KEVCHAT_API_PORT}
+      - KEVCHAT_API_DEBUG_PORT=${KEVCHAT_API_DEBUG_PORT}
+    volumes:
+      - type: bind
+        source: ./projects/api/src
+        target: /app/src
+      - type: bind
+        source: ./projects/api/dist
+        target: /app/dist
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          "sh -c 'until curl -f ${KEVCHAT_API_INTERNAL_HOST}:${KEVCHAT_API_PORT}/healthz; do sleep 1; done;'",
+        ]
+      start_period: 30s
+      start_interval: 5s
+    depends_on:
+      init_mongodb:
+        restart: true
+        condition: service_completed_successfully
+  proxy:
+    build:
+      context: .
+      dockerfile: projects/proxy/Dockerfile
+      args:
+        - KEVCHAT_ENV=${KEVCHAT_ENV}
+        - KEVCHAT_IDP_INTERNAL_HOST=${KEVCHAT_IDP_INTERNAL_HOST}
+        - KEVCHAT_API_INTERNAL_HOST=${KEVCHAT_API_INTERNAL_HOST}
+        - KEVCHAT_CLIENT_INTERNAL_HOST=${KEVCHAT_CLIENT_INTERNAL_HOST}
+        - KEVCHAT_FRONT_DOOR_INTERNAL_HOST=${KEVCHAT_FRONT_DOOR_INTERNAL_HOST}
+        - KEVCHAT_IDP_PORT=${KEVCHAT_IDP_PORT}
+        - KEVCHAT_API_PORT=${KEVCHAT_API_PORT}
+        - KEVCHAT_CLIENT_PORT=${KEVCHAT_CLIENT_PORT}
+        - KEVCHAT_FRONT_DOOR_PORT=${KEVCHAT_FRONT_DOOR_PORT}
+    image: kevchat_proxy:${KEVCHAT_ENV}
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./projects/proxy/certs:/etc/nginx/certs:ro
+    develop:
+      watch:
+        - action: rebuild
+          path: ./projects/proxy/nginx.conf
+          target: /etc/nginx/nginx.conf
+        - action: rebuild
+          path: ./projects/proxy/nginx.conf
+          target: /etc/nginx/nginx.conf
+        - action: rebuild
+          path: ./projects/includes
+          target: /etc/nginx/includes
+    depends_on:
+      kevchat_api:
+        condition: service_healthy
+      kevchat_front_door:
+        condition: service_healthy
+      kevchat_client:
+        condition: service_healthy
+  kevchat_front_door:
+    build:
+      context: .
+      dockerfile: projects/front-door/Dockerfile
+      args:
+        KEVCHAT_CLIENT_URL: https://${KEVCHAT_ENV}.app.kev.chat
+    image: kevchat_front_door:${KEVCHAT_ENV}
+    environment:
+      - KEVCHAT_FRONT_DOOR_PORT=${KEVCHAT_FRONT_DOOR_PORT}
+      - KEVCHAT_FRONT_DOOR_GET_STARTED_URL=${KEVCHAT_FRONT_DOOR_GET_STARTED_URL}
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          "sh -c 'until curl -f ${KEVCHAT_FRONT_DOOR_INTERNAL_HOST}:${KEVCHAT_FRONT_DOOR_PORT}/healthz; do sleep 1; done;'",
+        ]
+      start_period: 30s
+      start_interval: 5s
+  kevchat_idp:
+    build:
+      context: .
+      dockerfile: projects/idp/Dockerfile-local
+    image: kevchat_idp:${KEVCHAT_ENV}
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          "sh -c 'until curl -f ${KEVCHAT_IDP_INTERNAL_HOST}:${KEVCHAT_IDP_PORT}/healthz; do sleep 1; done;'",
+        ]
+      start_period: 30s
+      start_interval: 5s
+    ports:
+      - ${KEVCHAT_IDP_DEBUG_PORT}:${KEVCHAT_IDP_DEBUG_PORT}
+    environment:
+      - MONGO_CONNECTION_STRING=mongodb://${DB_IDP_USERNAME}:${DB_IDP_PASSWORD}@mongodb:${MONGO_PORT}/${DB_IDP_NAME}
+      - KEVCHAT_IDP_PORT=${KEVCHAT_IDP_PORT}
+      - KEVCHAT_IDP_DEBUG_PORT=${KEVCHAT_IDP_DEBUG_PORT}
+      - KEVCHAT_IDP_BASE_URL=${KEVCHAT_IDP_BASE_URL}
+      - KEVCHAT_CLIENT_AUTH_LOGIN_CALLBACK_URL=${KEVCHAT_CLIENT_AUTH_LOGIN_CALLBACK_URL}
+      - KEVCHAT_CLIENT_AUTH_LOGOUT_CALLBACK_URL=${KEVCHAT_CLIENT_AUTH_LOGOUT_CALLBACK_URL}
+      - KEVCHAT_IDP_OIDC_SESSION_COOKIE_KEY=${KEVCHAT_IDP_OIDC_SESSION_COOKIE_KEY}
+      - KEVCHAT_IDP_SESSION_COOKIE_KEY=${KEVCHAT_IDP_SESSION_COOKIE_KEY}
+    volumes:
+      - type: bind
+        source: ./projects/idp/data
+        target: /app/data
+      - type: bind
+        source: ./projects/idp/src
+        target: /app/src
+      - type: bind
+        source: ./projects/idp/dist
+        target: /app/dist
+      - type: bind
+        source: ./projects/idp/views
+        target: /app/views
+      - type: bind
+        source: ./projects/idp/public
+        target: /app/public

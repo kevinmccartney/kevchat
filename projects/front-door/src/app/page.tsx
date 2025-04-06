@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import Footer from "./common/Footer";
 import Header from "./common/Header";
-import { CONFIG } from "./config";
 
 export const metadata: Metadata = {
   title: "KevChat | A chat for Kevins!",
@@ -17,10 +16,13 @@ export default function Home() {
             Welcome to <span className="text-primary">KevChat</span>!
           </h1>
           <h2 className="mt-0">
-            The world&apos;s first chat for{" "}
+            The world&apos;s first chat for{' '}
             <span className="text-primary">Kevins</span> only.
           </h2>
-          <a href={CONFIG.clientUrl} className="btn btn-accent">
+          <a
+            href={process.env.KEVCHAT_FRONT_DOOR_GET_STARTED_URL}
+            className="btn btn-accent"
+          >
             Get Started
           </a>
         </div>

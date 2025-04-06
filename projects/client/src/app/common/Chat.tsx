@@ -6,8 +6,7 @@ export default function Chat() {
   const users: { [key: string]: User } = {
     "1": {
       name: "Kevin McCartney",
-      avatarUrl:
-        "https://media.licdn.com/dms/image/v2/C4E03AQFrt4YBflbtvQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1548424677629?e=1732147200&v=beta&t=cXdCRyz68zuGHXZnCL8l8wiim3patnhz31NFv87HYjo",
+      avatarUrl: "https://ui-avatars.com/api/?name=Kevin+McCartney",
     },
     "2": {
       name: "Kevin Costner",
@@ -90,7 +89,7 @@ export default function Chat() {
   ];
 
   return (
-    <div className="bg-base-300 flex-grow flex items-end kc-content-wrapper">
+    <div className="bg-base-300 px-11 flex-grow flex overflow-y-scroll">
       <div className="container mx-auto max-w-7xl py-6 flex flex-col">
         <div className="flex-grow">
           {chatMessages.map((message: ChatMessage, index: number) => (
@@ -123,13 +122,6 @@ export default function Chat() {
             </div>
           ))}
         </div>
-        <textarea
-          className="textarea textarea-bordered w-full mt-6"
-          placeholder="Type your message here"
-        ></textarea>
-        <button className="btn btn-accent self-end mt-4">
-          Send <span className="ri-send-plane-fill"></span>
-        </button>
       </div>
     </div>
   );

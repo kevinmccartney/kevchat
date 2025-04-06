@@ -13,21 +13,36 @@
       "path": "projects/infra"
     },
     {
-      "path": "projects/local-proxy"
+      "path": "projects/front-door"
     },
     {
-      "path": "projects/front-door"
+      "path": "projects/idp"
+    },
+    {
+      "path": "projects/proxy"
+    },
+    {
+      "path": "projects/scripts"
     }
   ],
   "settings": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "cSpell.words": ["healthz", "lintstagedrc", "daisyui", "tailwindcss"],
+    "editor.formatOnSave": false,
+    "cSpell.words": [
+      "daisyui",
+      "healthz",
+      "KEVCHAT",
+      "lintstagedrc",
+      "tailwindcss",
+    ],
     "editor.linkedEditing": true,
     "[terraform]": {
-      "editor.defaultFormatter": "hashicorp.terraform"
+      "editor.defaultFormatter": "hashicorp.terraform",
     },
-    "files.eol": "\n"
+    "[properties]": {
+      "editor.defaultFormatter": false,
+    },
+    "files.eol": "\n",
   },
   "extensions": {
     "recommendations": [
@@ -40,7 +55,7 @@
       "hediet.vscode-drawio",
       "christian-kohler.path-intellisense",
       "hashicorp.hcl",
-      "hashicorp.terraform"
-    ]
-  }
+      "hashicorp.terraform",
+    ],
+  },
 }

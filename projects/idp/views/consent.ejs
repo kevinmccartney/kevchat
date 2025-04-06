@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="/app.css" rel="stylesheet" type="text/css" />
+
+    <title>KevChat Identity | Login</title>
+  </head>
+  <body>
+    <div
+      class="h-full w-full flex flex-col justify-center items-center bg-base-300"
+    >
+      <article class="prose">
+        <h1 class="text-center">KevChat Identity</h1>
+        <div class="card card-dash bg-base-100">
+          <div class="card-body gap-0">
+            <h2 class="mt-0 mb-3">Login</h2>
+            <p>to continue to <strong><%= new URL(params.redirect_uri).host %></strong></p>
+            <form action="/interaction/<%= uid %>/confirm" method="post" class="flex flex-col gap-4" id="consentForm">
+              <div class="flex flex-col">
+               <%
+                    const missingScopes = new Set(details.missingOIDCScope);
+                    const msgMap = new Map([
+                      ['openid', 'Your account identifier'],
+                      ['offline_access', 'Keep connected to your account'],
+                      ['profile', 'Your profile information (name, email, phone, ...)'],
+                      ['email', 'Your email address'],
+                      ['phone', 'Your phone number'],
+                      ['address', 'Your address information']
+                    ]);
+
+                    if (missingScopes.size > 0) {
+                    %>
+                      <p class="mt-0"><strong>Requested access:</strong></p>
+
+                      <ul class="mt-0">
+                        <% for (const scope of missingScopes) { %>
+                          <li><%= msgMap.has(scope) ? msgMap.get(scope) : scope %></li>
+                        <% } %>
+                      </ul>
+
+                    <% } %>
+              </div>
+              <% if(!!errorMessage) { %>
+                <div role="alert" class="alert alert-error alert-soft" id="errorMessage">
+                  <span class="whitespace-pre-line"><%= errorMessage  %></span>
+                </div>
+              <% } %>
+              <div class="flex gap-4 justify-end">
+                <a href="/interaction/<%= uid %>/abort" class="btn btn-outline btn-accent">Cancel</a>
+                <button type="submit" class="btn btn-primary">Continue</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </article>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("consentForm");
+        const inputs = form.querySelectorAll('input');
+        
+        for(let input of inputs) {
+          input.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault(); // prevent form submission on enter
+              const form = document.getElementById('loginForm');
+              if (form) form.submit();
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

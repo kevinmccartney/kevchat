@@ -60,17 +60,17 @@ resource "aws_lb_target_group" "kevchat_front_door" {
   }
 }
 
-data "aws_network_interface" "s3_vpce_endpoints" {
-  for_each = aws_vpc_endpoint.s3.network_interface_ids
-  id       = each.value
-}
+# data "aws_network_interface" "s3_vpce_endpoints" {
+#   for_each = aws_vpc_endpoint.s3.network_interface_ids
+#   id       = each.value
+# }
 
-resource "aws_lb_target_group_attachment" "kevchat_front_door" {
-  for_each         = data.aws_network_interface.s3_vpce_endpoints
-  target_group_arn = aws_lb_target_group.kevchat_front_door.arn
-  target_id        = each.value.private_ip
-  port             = 443
-}
+# resource "aws_lb_target_group_attachment" "kevchat_front_door" {
+#   for_each         = data.aws_network_interface.s3_vpce_endpoints
+#   target_group_arn = aws_lb_target_group.kevchat_front_door.arn
+#   target_id        = each.value.private_ip
+#   port             = 443
+# }
 
 resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.kevchat.arn

@@ -1,38 +1,74 @@
 # TODO
 
-- [x] VS Code setup
-- [x] Check linting setup
-- [x] Prettier
-- [x] Husky
-- [x] Commit health
-- [ ] Write ADRs
-- [ ] Write features
-- [ ] Draw Arch Diagrams
-- [ ] Write Code
-- [ ] Infra
+## Backlog
 
-## DevEx/Tech Debt
+### V1
 
-- [x] TF format/lint hooks & (VS Code integration)
-- [x] Write docker compose for local env
-- [ ] Use private IPs for ECS services (set up VPC gateway for ECR)
-- [ ] Eslint sort imports into groups
-- [ ] Rework AWS CLI credentials (that terraform will use) to not use long-term credentials (API keys)
-- [ ] CI/CD pipeline
-- [ ] Use npm ci in docker images
-- [ ] Clean up user & group policy assignments for the kevops user
-- [ ] Automate docker tagging with versions from package.json
-- [ ] Go through Terraform resources to see if I need to add any non-default properties
+- [ ] Check commit quality tooling
+- [ ] Write chat websocket API
+- [ ] Consolidate dockerfiles
+- [ ] Front door => login (add signup link to login page)
+- [ ] Can I use a middleware/session to manage the cancel link? 
+
+
+- [ ] Finish writing user API
+- [ ] Allow login with email
+- [ ] Use Redis or memcache instead of mongo for IDP sessions
+- [ ] Write UI user profile
+- [ ] Implement PKCE for OIDC on IDP server
+- [ ] Figure out handling of nginx errors (backend unreachable due to compile error 502 bad gateway)
+- [ ] Figure out a way to create an initial session for the user after signup
+- [ ] Fix web app debugging
+- [ ] Use npm ci in prod docker images
 - [ ] Scan docker container/optimize size
-- [ ] Do I need to be pointing to the dualstack ALB domains for the A records? (it does this when you configure thru the UI)
-- [ ] Can we have the ALB redirect strip the index.html off of the url?
 - [ ] Is there a better way to do env vars for next?
+- [ ] Make HMR work on local domains
+- [ ] Eslint sort imports into groups
+- [ ] Write ADRs
+- [ ] Draw Arch Diagrams
+- [ ] Switch favicon for light mode
+- [ ] CI/CD pipeline
+- [ ] Tests (ESP E2E for IDP)
+
+### V2
+
+- [ ] Write config abstraction layer for NestJS APIs
+- [ ] Write stuff for email confirmation of Cognito accounts
+- [ ] Rework AWS CLI credentials (that terraform will use) to not use long-term credentials (API keys)
+- [ ] Go through Terraform resources to see if I need to add any non-default properties
 - [ ] Set up private connectivity for Mongo Atlas
 - [ ] Add Mongo Atlas IP allow lists to TF (?)
-- [ ] Make HMR work on local domains
+- [ ] Use private IPs for ECS services (set up VPC gateway for ECR)
+- [ ] Clean up AWS user & group policy assignments for the kevops user
+- [ ] Automate docker tagging with versions from package.json
+- [ ] Look into gitbook
 
-## Tasks
+### Tech Debt
 
+- [ ] Add link to NextJS issue re inspect port & patch
+
+## Done
+
+- [x] Get a commit together
+- [x] Build stylesheet as a part of IDP docker build
+- [x] Review files
+- [x] Go through package.json files to see what might be unneeded
+- [x] Variablize mongo init
+- [x] Use env vars in docker-compose
+- [x] Check return values of IDP UserService
+- [x] Remove users module from API
+  - [x] Client side validation
+- [x] Continue kick tires on IDP stuff to see what needs firmed up
+- [x] GET interaction/UI42rwzfDMy0089-74-z6/abort 404
+- [x] Implement 405 for idp
+- [x] GET /interaction/{uid} 404
+- [x] Invalid creds kills login
+- [x] Stop sign out from signout confirm screen when user clicks cancel
+- [x] Set up auth error pages in app
+- [x] Fix CSS layout :(
+- [x] Clear kevchat_access_token cookie on logout
+- [x] Put app behind auth
+- [x] Fix nginx unauthenticated responses
 - [x] Dockerize client
 - [x] Initialize AWS TF workspace
 - [x] Deploy client
@@ -54,12 +90,14 @@
 - [x] Allow logout
 - [x] Deploy mongo atlas
 - [x] Make sure I can debug
-- [ ] Release new API & Client images
-- [ ] Write profile API
-- [ ] Fix CSS layout :(
-- [ ] Write chat websocket API
-- [ ] Write stuff for email confirmation of Cognito accounts
-
-- [ ] Switch favicon for light mode
-- [ ] Custom OAuth login page
-- [ ] Add link to NextJS issue re inspect port & patch
+- [x] VS Code setup
+- [x] Check linting setup
+- [x] Prettier
+- [x] Husky
+- [x] Commit health
+- [x] TF format/lint hooks & (VS Code integration)
+- [x] Write docker compose for local env
+- [x] Figure out idp & api user Mongo perms
+- [x] Create user endpoint
+- [x] Move oidc to use Mongo db users
+- [x] Style OIDC pages
