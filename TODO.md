@@ -4,12 +4,10 @@
 
 ### V1
 
-- [ ] Check commit quality tooling
 - [ ] Write chat websocket API
 - [ ] Consolidate dockerfiles
 - [ ] Front door => login (add signup link to login page)
-- [ ] Can I use a middleware/session to manage the cancel link? 
-
+- [ ] Can I use a middleware/session to manage the cancel link?
 
 - [ ] Finish writing user API
 - [ ] Allow login with email
@@ -49,6 +47,7 @@
 
 ## Done
 
+- [x] Check commit quality tooling
 - [x] Get a commit together
 - [x] Build stylesheet as a part of IDP docker build
 - [x] Review files
