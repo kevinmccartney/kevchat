@@ -4,6 +4,8 @@
 
 ### V1
 
+- [ ] Write user sync to API DB (kafka events)
+- [ ] Set up volume for Mongo data
 - [ ] Write chat websocket API
 - [ ] Consolidate dockerfiles
 - [ ] Front door => login (add signup link to login page)
@@ -11,8 +13,8 @@
 
 - [ ] Finish writing user API
 - [ ] Allow login with email
-- [ ] Use Redis or memcache instead of mongo for IDP sessions
 - [ ] Write UI user profile
+- [ ] Use Redis or memcache instead of mongo for IDP sessions
 - [ ] Implement PKCE for OIDC on IDP server
 - [ ] Figure out handling of nginx errors (backend unreachable due to compile error 502 bad gateway)
 - [ ] Figure out a way to create an initial session for the user after signup

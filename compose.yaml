@@ -82,6 +82,11 @@ services:
       context: .
       dockerfile: projects/api/Dockerfile-local
     image: kevchat_api:${KEVCHAT_ENV}
+    depends_on:
+      init_kafka:
+        condition: service_completed_successfully
+      init_mongodb:
+        condition: service_completed_successfully
     ports:
       - ${KEVCHAT_API_DEBUG_PORT}:${KEVCHAT_API_DEBUG_PORT}
     environment:
@@ -103,10 +108,6 @@ services:
         ]
       start_period: 30s
       start_interval: 5s
-    depends_on:
-      init_mongodb:
-        restart: true
-        condition: service_completed_successfully
   proxy:
     build:
       context: .
@@ -145,6 +146,8 @@ services:
         condition: service_healthy
       kevchat_client:
         condition: service_healthy
+      kevchat_idp:
+        condition: service_healthy
   kevchat_front_door:
     build:
       context: .
@@ -168,6 +171,11 @@ services:
       context: .
       dockerfile: projects/idp/Dockerfile-local
     image: kevchat_idp:${KEVCHAT_ENV}
+    depends_on:
+      init_kafka:
+        condition: service_completed_successfully
+      init_mongodb:
+        condition: service_completed_successfully
     healthcheck:
       test:
         [
@@ -203,3 +211,65 @@ services:
       - type: bind
         source: ./projects/idp/public
         target: /app/public
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          "sh -c 'until kafka-topics --bootstrap-server kafka:${KAFKA_INTERNAL_LISTENER_PORT} --list; do sleep 1; done;'",
+        ]
+      start_period: 30s
+      start_interval: 5s
+    ports:
+      - "${KAFKA_EXTERNAL_LISTENER_PORT}:${KAFKA_EXTERNAL_LISTENER_PORT}"
+    environment:
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+      CLUSTER_ID: A9-by2cjSNaqPbwb-bfkCA
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: >
+        INTERNAL:PLAINTEXT,
+        EXTERNAL:PLAINTEXT,
+        CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:${KAFKA_CONTROLLER_LISTENER_PORT}
+      KAFKA_LISTENERS: >
+        INTERNAL://0.0.0.0:${KAFKA_INTERNAL_LISTENER_PORT},
+        EXTERNAL://0.0.0.0:${KAFKA_EXTERNAL_LISTENER_PORT},
+        CONTROLLER://:${KAFKA_CONTROLLER_LISTENER_PORT}
+      KAFKA_ADVERTISED_LISTENERS: >
+        INTERNAL://kafka:${KAFKA_INTERNAL_LISTENER_PORT},
+        EXTERNAL://localhost:${KAFKA_EXTERNAL_LISTENER_PORT},
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+  init_kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    restart: on-failure:5
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      - KAFKA_INTERNAL_LISTENER_PORT=${KAFKA_INTERNAL_LISTENER_PORT}
+      - KAFKA_HOST=kafka
+      - KEVCHAT_IDP_USER_UPSERT_TOPIC_NAME=${KEVCHAT_IDP_USER_UPSERT_TOPIC_NAME}
+    volumes:
+      - ./projects/scripts:/scripts
+    entrypoint: ["sh", "/scripts/create-kafka-topics.sh"]
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kevchat_kafka_ui
+    ports:
+      - 8888:8080
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=kevchat
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:${KAFKA_INTERNAL_LISTENER_PORT}
+    depends_on:
+      init_kafka:
+        condition: service_completed_successfully
+volumes:
+  kafka_data:
