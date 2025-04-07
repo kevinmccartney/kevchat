@@ -22,7 +22,7 @@ export default async function Home() {
         >
           Login
         </a>
-        <a href={process.env.KEVCHAT_CLIENT_URL} className="text-accent mt-4">
+        <a href={process.env.KEVCHAT_FRONT_DOOR_URL} className="text-accent mt-4">
           Go back to Home
         </a>
       </div>

@@ -35,6 +35,23 @@ export class SignupController {
     });
   }
 
+  // @Get()
+  // async succcess(
+  //   @Response() res: ExpressResponse,
+  //   @Request() req: ExpressRequest,
+  // ) {
+  //   const { cancelRedirectUrl, successRedirectUrl } = req.query;
+  //   if (!successRedirectUrl) {
+  //     return res.status(400).render('error', {
+  //       errorMessage: 'Missing success redirect URL',
+  //     });
+  //   }
+  //   return res.status(200).render('signup', {
+  //     successRedirectUrl: successRedirectUrl,
+  //     cancelRedirectUrl: cancelRedirectUrl ?? null,
+  //   });
+  // }
+
   @Post()
   async userSignUp(
     @Response() res: ExpressResponse,
@@ -46,7 +63,7 @@ export class SignupController {
         this._http.post<UserDto>('http://kevchat_idp:4000/users', req.body),
       );
 
-      return userCreate;
+      return res.status(201).json(userCreate.data);
     } catch (err) {
       console.error('Error creating user during signup', err);
 

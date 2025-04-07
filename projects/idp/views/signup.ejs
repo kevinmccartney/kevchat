@@ -139,7 +139,7 @@
 
                 form.reset();
 
-                window.location.href = "<%= successRedirectUrl %>";
+                window.location.href = "<%- successRedirectUrl %>";
             } catch (error) {
                 errorMessageElement.classList.remove("hidden");
                 errorMessageSpan.textContent = 'Error submitting form. Please try again.';
