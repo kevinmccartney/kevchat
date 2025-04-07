@@ -4,11 +4,9 @@
 
 ### V1
 
-- [ ] Set up volume for Mongo data
 - [ ] Write chat websocket API
 - [ ] Consolidate dockerfiles
-- [ ] Front door => login (add signup link to login page)
-- [ ] Can I use a middleware/session to manage the cancel link?
+- [ ] Can I use a middleware/session to manage the cancel link (on login)?
 - [ ] Write more validation for user create endpoint
 - [ ] Use Nest logger for all logging
 
@@ -31,6 +29,7 @@
 - [ ] Switch favicon for light mode
 - [ ] CI/CD pipeline
 - [ ] Tests (ESP E2E for IDP)
+- [ ] Can I get XXS'd/other security vuln with the idp signin query params? (the answer is almost definitely yes)
 
 ### V2
 
@@ -51,6 +50,8 @@
 
 ## Done
 
+- [x] Front door => login (add signup link to login page)
+- [x] Set up volume for Mongo data
 - [x] Write user sync to API DB (kafka events)
 - [x] Check commit quality tooling
 - [x] Get a commit together

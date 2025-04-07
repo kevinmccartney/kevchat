@@ -47,9 +47,7 @@ services:
     ports:
       - ${MONGO_PORT}:${MONGO_PORT}
     volumes:
-      - type: bind
-        source: ./data
-        target: /data/db
+      - mongo_data:/data/db
     healthcheck:
       test:
         ['CMD-SHELL', "sh -c 'until nc -z mongodb ${MONGO_PORT}; do sleep 1; done;'"]
@@ -283,3 +281,4 @@ services:
         condition: service_completed_successfully
 volumes:
   kafka_data:
+  mongo_data:
