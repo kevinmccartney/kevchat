@@ -16,12 +16,17 @@ import {
 } from 'express';
 import { UsersService } from './users.service';
 import { UserDto } from 'src/users/user.model';
+import { ClientKafka } from '@nestjs/microservices';
+import { KAFKA_SERVICE } from 'src/kafka.module';
 
 @Controller('/users')
 export class UsersController {
-  private readonly logger = new Logger(UsersController.name);
+  private readonly _logger = new Logger(UsersController.name);
 
-  constructor(@Inject() private readonly _usersService: UsersService) {}
+  constructor(
+    @Inject() private readonly _usersService: UsersService,
+    @Inject(KAFKA_SERVICE) private readonly _client: ClientKafka,
+  ) {}
 
   @Post('')
   async createUser(
@@ -33,7 +38,7 @@ export class UsersController {
         req.body.username,
       );
       if (userExists) {
-        this.logger.warn(
+        this._logger.warn(
           `Username "${req.body.username}" already exists. Cannot create user.`,
         );
         return res.status(400).json({
@@ -41,7 +46,7 @@ export class UsersController {
         });
       }
     } catch (err) {
-      this.logger.error(
+      this._logger.error(
         `Unexpected error while checking for existing username`,
         err,
       );
@@ -52,6 +57,8 @@ export class UsersController {
 
     try {
       const user = await this._usersService.create(req.body);
+
+      this._client.emit(process.env.KEVCHAT_IDP_USER_UPSERT_TOPIC_NAME, user);
 
       return res.status(201).json(user);
     } catch (err) {

@@ -4,14 +4,16 @@
 
 ### V1
 
-- [ ] Write user sync to API DB (kafka events)
 - [ ] Set up volume for Mongo data
 - [ ] Write chat websocket API
 - [ ] Consolidate dockerfiles
 - [ ] Front door => login (add signup link to login page)
 - [ ] Can I use a middleware/session to manage the cancel link?
+- [ ] Write more validation for user create endpoint
+- [ ] Use Nest logger for all logging
 
 - [ ] Finish writing user API
+- [ ] Add more validation around user_upsert kafka handler API (validate the input)
 - [ ] Allow login with email
 - [ ] Write UI user profile
 - [ ] Use Redis or memcache instead of mongo for IDP sessions
@@ -49,6 +51,7 @@
 
 ## Done
 
+- [x] Write user sync to API DB (kafka events)
 - [x] Check commit quality tooling
 - [x] Get a commit together
 - [x] Build stylesheet as a part of IDP docker build
