@@ -9,6 +9,8 @@ You must add the following lines to your hosts file to make this proxy work -
 127.0.0.1 local.api.kev.chat
 127.0.0.1 local.app.kev.chat
 127.0.0.1 local.idp.kev.chat
+127.0.0.1 local.kafka-ui.kev.chat
+127.0.0.1 local.socketio-admin.kev.chat
 ```
 
 You will also need to update generate a local SSL cert -

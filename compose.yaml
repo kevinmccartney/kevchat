@@ -11,6 +11,7 @@ services:
         KEVCHAT_FRONT_DOOR_URL: ${KEVCHAT_FRONT_DOOR_URL}
     image: kevchat_client:${KEVCHAT_ENV}
     environment:
+      - KEVCHAT_API_URL=${KEVCHAT_API_URL}
       - KEVCHAT_CLIENT_PORT=${KEVCHAT_CLIENT_PORT}
       - KEVCHAT_CLIENT_LOGIN_URL=${KEVCHAT_CLIENT_LOGIN_URL}
       - KEVCHAT_CLIENT_LOGOUT_URL=${KEVCHAT_CLIENT_LOGOUT_URL}
@@ -95,6 +96,7 @@ services:
       - KAFKA_BROKERS=kafka:${KAFKA_INTERNAL_LISTENER_PORT}
       - KAFKA_CLIENT_ID=activity-log-api
       - KAFKA_CONSUMER_GROUP_ID=activity-log-api
+      - KAFKAJS_NO_PARTITIONER_WARNING=1
     volumes:
       - type: bind
         source: ./projects/api/src
@@ -124,7 +126,14 @@ services:
         - KEVCHAT_API_PORT=${KEVCHAT_API_PORT}
         - KEVCHAT_CLIENT_PORT=${KEVCHAT_CLIENT_PORT}
         - KEVCHAT_FRONT_DOOR_PORT=${KEVCHAT_FRONT_DOOR_PORT}
+        - KEVCHAT_CLIENT_URL=${KEVCHAT_CLIENT_URL}
+        - KEVCHAT_SOCKET_IO_ADMIN_URL=${KEVCHAT_SOCKET_IO_ADMIN_URL}
+        - KEVCHAT_KAFKA_UI_INTERNAL_HOST=${KEVCHAT_KAFKA_UI_INTERNAL_HOST}
+        - KEVCHAT_KAFKA_UI_PORT=${KEVCHAT_KAFKA_UI_PORT}
+        - KEVCHAT_SOCKET_IO_ADMIN_INTERNAL_HOST=${KEVCHAT_SOCKET_IO_ADMIN_INTERNAL_HOST}
+        - KEVCHAT_SOCKET_IO_ADMIN_PORT=${KEVCHAT_SOCKET_IO_ADMIN_PORT}
     image: kevchat_proxy:${KEVCHAT_ENV}
+    # command: tail -f /dev/null
     ports:
       - 80:80
       - 443:443
@@ -149,6 +158,10 @@ services:
       kevchat_client:
         condition: service_healthy
       kevchat_idp:
+        condition: service_healthy
+      socket_io_admin:
+        condition: service_healthy
+      kafka_ui:
         condition: service_healthy
   kevchat_front_door:
     build:
@@ -268,9 +281,11 @@ services:
     volumes:
       - ./projects/scripts:/scripts
     entrypoint: ["sh", "/scripts/create-kafka-topics.sh"]
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: kevchat_kafka_ui
+  kafka_ui:
+    build:
+      context: .
+      dockerfile: KafkaUI.Dockerfile
+    # container_name: kevchat_kafka_ui
     ports:
       - 8888:8080
     environment:
@@ -279,6 +294,29 @@ services:
     depends_on:
       init_kafka:
         condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          "sh -c 'until curl -f http://${KEVCHAT_KAFKA_UI_INTERNAL_HOST}:${KEVCHAT_KAFKA_UI_PORT}; do sleep 1; done;'",
+        ]
+      start_period: 30s
+      start_interval: 5s
+  socket_io_admin:
+    build:
+      context: .
+      dockerfile: SocketIOAdmin.Dockerfile
+      args:
+        - KEVCHAT_SOCKET_IO_ADMIN_PORT=${KEVCHAT_SOCKET_IO_ADMIN_PORT}
+    # command: tail -f /dev/null
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          "sh -c 'until curl -f http://${KEVCHAT_SOCKET_IO_ADMIN_INTERNAL_HOST}:${KEVCHAT_SOCKET_IO_ADMIN_PORT}; do sleep 1; done;'",
+        ]
+      start_period: 30s
+      start_interval: 5s
 volumes:
   kafka_data:
   mongo_data:

@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { SocketIOAdapter } from './socket-io.adapter';
+
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +28,7 @@ async function bootstrap() {
     },
   });
 
+  app.useWebSocketAdapter(new SocketIOAdapter(app));
   await app.startAllMicroservices();
   await app.listen(process.env.KEVCHAT_API_PORT as string);
 }

@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { HealthModule } from './health';
 import { UsersModule } from 'src/users/users.module';
+import { ConversationsModule } from 'src/conversations/conversations.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { UsersModule } from 'src/users/users.module';
       autoIndex: false,
     }) as DynamicModule,
     UsersModule,
+    ConversationsModule,
   ],
 })
 export class AppModule {}

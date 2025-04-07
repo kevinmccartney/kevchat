@@ -16,7 +16,8 @@
     "./projects/client",
     "./projects/api",
     "./projects/front-door",
-    "./projects/idp"
+    "./projects/idp",
+    "./projects/scripts"
   ],
   "type": "module",
   "scripts": {

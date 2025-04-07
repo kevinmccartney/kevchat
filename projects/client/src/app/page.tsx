@@ -16,17 +16,7 @@ export default async function Home() {
   return (
     <section className="flex flex-col h-full">
       <Header isAuthenticated={isAuthenticated} />
-      <Chat />
-      <div className="px-11 flex flex-col">
-        <textarea
-          className="textarea textarea-bordered w-full mt-6"
-          placeholder="Type your message here"
-        ></textarea>
-        <button className="btn btn-accent self-end mt-4">
-          Send <span className="ri-send-plane-fill"></span>
-        </button>
-      </div>
-
+      <Chat websocketAddress={process.env.KEVCHAT_API_URL as string} />
       <Footer />
       <ApiHealth />
     </section>

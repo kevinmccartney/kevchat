@@ -4,13 +4,17 @@
 
 ### V1
 
-- [ ] Write chat websocket API
+- [ ] Splash page link should be login
+- [ ] Conversations UI
+- [ ] Set up rooms
 - [ ] Consolidate dockerfiles
 - [ ] Can I use a middleware/session to manage the cancel link (on login)?
 - [ ] Write more validation for user create endpoint
 - [ ] Use Nest logger for all logging
+- [ ] Create dev token tool (if cookie exists, print it on page, if not redirect to login (add dev token tool to redirect URLs))
 
 - [ ] Finish writing user API
+- [ ] Implement at least once delivery for WebSocket messages
 - [ ] Add more validation around user_upsert kafka handler API (validate the input)
 - [ ] Allow login with email
 - [ ] Write UI user profile
@@ -50,6 +54,10 @@
 
 ## Done
 
+- [x] Make commit
+- [x] Write chat websocket API
+- [x] Self-host socket UI
+- [x] Set up DNS for kafka UI, websocket client
 - [x] Front door => login (add signup link to login page)
 - [x] Set up volume for Mongo data
 - [x] Write user sync to API DB (kafka events)
