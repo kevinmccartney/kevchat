@@ -10,13 +10,13 @@
   </head>
   <body>
     <div
-      class="h-full w-full flex flex-col justify-center items-center bg-base-300"
+      class="min-h-full w-full flex flex-col justify-center items-center bg-base-300"
     >
-      <article class="prose">
-        <h1 class="text-center">KevChat Identity</h1>
+      <main class="py-12">
+        <h1 class="text-center text-3xl mb-4">KevChat Identity</h1>
         <div class="card card-dash bg-base-100">
-          <div class="card-body gap-0">
-            <h2 class="mt-0 mb-3">Login</h2>
+          <div class="card-body">
+            <h2 class="mb-3 text-2xl">Login</h2>
             <p>to continue to <strong><%= new URL(params.redirect_uri).host %></strong></p>
             <form action="/interaction/<%= uid %>/confirm" method="post" class="flex flex-col gap-4" id="consentForm">
               <div class="flex flex-col">
@@ -33,11 +33,11 @@
 
                     if (missingScopes.size > 0) {
                     %>
-                      <p class="mt-0"><strong>Requested access:</strong></p>
+                      <p class="mb-2"><strong>Requested access:</strong></p>
 
-                      <ul class="mt-0">
+                      <ul class="list-disc">
                         <% for (const scope of missingScopes) { %>
-                          <li><%= msgMap.has(scope) ? msgMap.get(scope) : scope %></li>
+                          <li class="ml-4"><%= msgMap.has(scope) ? msgMap.get(scope) : scope %></li>
                         <% } %>
                       </ul>
 
@@ -55,7 +55,7 @@
             </form>
           </div>
         </div>
-      </article>
+      </main>
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -65,9 +65,11 @@
         for(let input of inputs) {
           input.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
-              event.preventDefault(); // prevent form submission on enter
-              const form = document.getElementById('loginForm');
-              if (form) form.submit();
+              event.preventDefault();
+              
+              if (form) {
+                form.submit();
+              }
             }
           });
         }

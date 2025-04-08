@@ -11,22 +11,22 @@
   </head>
   <body>
     <div
-      class="container h-full flex flex-col justify-center items-center bg-base-300"
+      class="container min-h-screen w-full flex flex-col justify-center items-center bg-base-300"
     >
-      <article class="prose">
-        <h1 class="text-center">KevChat Identity</h1>
-        <div class="card card-dash bg-base-100 w-96">
-          <div class="card-body">
-            <h2 class="mt-0 mb-3">We hit an error:</h2>
+      <main class="py-12">
+        <h1 class="text-center text-3xl mb-4">KevChat Identity</h1>
+        <div class="card card-dash bg-base-100 min-w-80">
+          <div class="card-body gap-4">
+            <h2 class="text-2xl">We hit an error:</h2>
             <% if (errorMessage) { %>
               <div role="alert" class="alert alert-error alert-soft">
                 <span><%= errorMessage %></span>
               </div>
             <% } %>
-            <p class="mb-0">Please close this window & try again later.</p>
+            <p>Please close this window & try again later.</p>
           </div>
         </div>
-      </article>
+      </mai>
     </div>
   </body>
 </html>

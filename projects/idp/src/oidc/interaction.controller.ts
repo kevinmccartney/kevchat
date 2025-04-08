@@ -50,7 +50,7 @@ export class InteractionController {
       console.error('Error while getting interaction', err);
 
       return res.status(500).render('error', {
-        errorMessage: err.error_description,
+        errorMessage: err.error_description || err.message,
       });
     }
   }

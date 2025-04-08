@@ -16,12 +16,18 @@ async function bootstrap() {
 
   app.use('/interaction', urlencoded({ extended: false }));
 
+  app.set('trust proxy', 1);
+
   app.use(
     session({
       secret: process.env.KEVCHAT_IDP_SESSION_COOKIE_KEY as string,
       resave: false,
       saveUninitialized: false,
-      cookie: { secure: true }, // Set to `true` if using HTTPS
+      cookie: {
+        secure: true, // true if behind HTTPS or using proxy with `trust proxy`
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60, // 1 hour
+      },
     }),
   );
 

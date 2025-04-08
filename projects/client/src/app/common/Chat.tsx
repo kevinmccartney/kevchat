@@ -81,7 +81,11 @@ const MOCK_CHAT_MESSAGES: ChatMessage[] = [
   },
 ];
 
-export default function Chat({ websocketAddress }: { websocketAddress: string }) {
+export default function Chat({
+  websocketAddress,
+}: {
+  websocketAddress: string;
+}) {
   const { socket } = useSocket(websocketAddress);
   const [messages, setMessages] = useState(MOCK_CHAT_MESSAGES);
   const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -102,8 +106,7 @@ export default function Chat({ websocketAddress }: { websocketAddress: string })
         {
           ...data,
           type: 'incoming',
-        }
-
+        },
       ];
 
       setMessages(newMessages);
@@ -170,9 +173,29 @@ export default function Chat({ websocketAddress }: { websocketAddress: string })
 
   return (
     <>
-      <div className="bg-base-300 px-11 flex-grow flex overflow-y-scroll">
-        <div className="container mx-auto max-w-7xl py-6 flex flex-col">
-          <div className="flex-grow flex flex-col gap-3">
+      <div className="bg-base-300 flex-grow flex overflow-hidden">
+        <div className="container mx-auto max-w-7xl flex">
+          <div className="hidden lg:flex flex-col flex-none w-1/4 h-full bg-base-200 rounded-lg p-4">
+            <h2 className="text-xl font-bold">Conversations</h2>
+            <ul className="menu w-full">
+              <li>
+                <div className="flex flex-row gap-2 items-center">
+                  <div className="chat-image avatar">
+                    <div className="w-10 rounded-full">
+                      <Image
+                        src={USERS['2'].avatarUrl}
+                        alt={`Profile pic for ${USERS['2'].name}`}
+                        width={60}
+                        height={60}
+                      />
+                    </div>
+                  </div>
+                  <p>{USERS['2'].name}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div className="px-11 py-6 flex-grow flex flex-col gap-3 overflow-y-scroll">
             {messages.map((message: ChatMessage, index: number) => (
               <div
                 className={`chat ${message.type === 'incoming' ? 'chat-start' : 'chat-end'}`}
@@ -204,7 +227,7 @@ export default function Chat({ websocketAddress }: { websocketAddress: string })
                 </div>
               </div>
             ))}
-            <div id="scroll-anchor" className="h-0" ref={bottomRef} ></div>
+            <div id="scroll-anchor" className="h-0" ref={bottomRef}></div>
           </div>
         </div>
       </div>

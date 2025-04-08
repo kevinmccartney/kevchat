@@ -1,8 +1,11 @@
-import daisyui from 'daisyui';
-import tailwindTypography from '@tailwindcss/typography';
+/* eslint-disable @typescript-eslint/no-require-imports */
+const daisyui = require('daisyui');
 
-const config = {
+console.log('Using Tailwind config');
+
+module.exports = {
   content: ['./views/*.ejs'],
+  important: true,
   theme: {
     extend: {
       colors: {
@@ -11,10 +14,8 @@ const config = {
       },
     },
   },
-  plugins: [tailwindTypography, daisyui],
+  plugins: [daisyui],
   daisyui: {
     themes: ['light', 'dark'],
   },
-  important: true,
 };
-export default config;

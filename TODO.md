@@ -4,15 +4,19 @@
 
 ### V1
 
-- [ ] Splash page link should be login
-- [ ] Conversations UI
-- [ ] Set up rooms
-- [ ] Consolidate dockerfiles
 - [ ] Can I use a middleware/session to manage the cancel link (on login)?
+  - [ ] Add signup and cancel link to login
+- [ ] Splash page link should be login
+- [ ] Mobile cleanup
+  - [ ] Tear out all that prose BS, just wing it on type sizes
+- [ ] Set up rooms on backend & UI
+- [ ] Consolidate dockerfiles
+
 - [ ] Write more validation for user create endpoint
 - [ ] Use Nest logger for all logging
-- [ ] Create dev token tool (if cookie exists, print it on page, if not redirect to login (add dev token tool to redirect URLs))
+- [ ] UIState API (saves what the user was looking at last, among other things)
 
+- [ ] Create dev token tool (if cookie exists, print it on page, if not redirect to login (add dev token tool to redirect URLs))
 - [ ] Finish writing user API
 - [ ] Implement at least once delivery for WebSocket messages
 - [ ] Add more validation around user_upsert kafka handler API (validate the input)
@@ -37,6 +41,7 @@
 
 ### V2
 
+- [ ] Notifications
 - [ ] Write config abstraction layer for NestJS APIs
 - [ ] Write stuff for email confirmation of Cognito accounts
 - [ ] Rework AWS CLI credentials (that terraform will use) to not use long-term credentials (API keys)
@@ -54,6 +59,7 @@
 
 ## Done
 
+- [x] List of convos
 - [x] Make commit
 - [x] Write chat websocket API
 - [x] Self-host socket UI

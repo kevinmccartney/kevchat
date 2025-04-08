@@ -11,8 +11,8 @@ export default function Home() {
     <section className="flex flex-col h-full">
       <Header />
       <div className="bg-base-300 flex-grow flex items-center">
-        <div className="container mx-auto max-w-7xl py-6 flex flex-col justify-center items-center prose">
-          <h1 className="mb-8">
+        <div className="container mx-auto max-w-7xl py-6 flex flex-col justify-center items-center">
+          <h1 className="text-4xl mb-8">
             Welcome to <span className="text-primary">KevChat</span>!
           </h1>
           <h2 className="mt-0">

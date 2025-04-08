@@ -173,6 +173,13 @@ services:
     environment:
       - KEVCHAT_FRONT_DOOR_PORT=${KEVCHAT_FRONT_DOOR_PORT}
       - KEVCHAT_FRONT_DOOR_GET_STARTED_URL=${KEVCHAT_FRONT_DOOR_GET_STARTED_URL}
+    volumes:
+      - type: bind
+        source: ./projects/front-door/src
+        target: /app/src
+      - type: bind
+        source: ./projects/front-door/.next
+        target: /app/.next
     healthcheck:
       test:
         [

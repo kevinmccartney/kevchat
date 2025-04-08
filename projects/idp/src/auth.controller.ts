@@ -5,6 +5,8 @@ import {
   Request,
   Get,
   Response,
+  Req,
+  Res,
 } from '@nestjs/common';
 import {
   Response as ExpressResponse,
@@ -35,6 +37,26 @@ export class AuthController {
       console.error('Error during token introspection:', error.message);
       return false;
     }
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('login')
+  async login(@Req() req: ExpressRequest, @Res() res: ExpressResponse) {
+    req.session.cancelRedirect = req.query.cancelRedirect as string;
+
+    return res.status(200).json({
+      message: 'Login successful',
+    });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('logout')
+  async logout(@Req() req: ExpressRequest, @Res() res: ExpressResponse) {
+    console.log(req.session.cancelRedirect);
+
+    return res.status(2000).json({
+      message: 'Logout successful',
+    });
   }
 
   @HttpCode(HttpStatus.OK)

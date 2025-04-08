@@ -12,13 +12,14 @@
   </head>
   <body>
     <div
-      class="h-full w-full flex flex-col justify-center items-center bg-base-300"
+      id="app"
+      class="min-h-full w-full flex flex-col justify-center items-center bg-base-300"
     >
-      <article class="prose">
-        <h1 class="text-center">KevChat Identity</h1>
-        <div class="card card-dash bg-base-100">
+      <main class="py-12">
+        <h1 class="text-center text-3xl mb-4">KevChat Identity</h1>
+        <div class="card card-dash bg-base-100 min-w-80">
           <div class="card-body">
-            <h2 class="mt-0 mb-3">Login</h2>
+            <h2 class="mb-3 text-2xl">Login</h2>
             <form action="/interaction/<%= uid %>/login" method="post" class="flex flex-col gap-4" id="loginForm">
               <div class="flex flex-col gap-4">
                 <input
@@ -41,7 +42,7 @@
                   <span class="whitespace-pre-line"><%= errorMessage  %></span>
                 </div>
               <% } %>
-              <div class="flex mt-4 gap-4 justify-end">
+              <div class="flex gap-4 justify-end">
                 <% if (typeof cancelRedirectUrl !== 'undefined') { %>
                   <a
                     href="<%= cancelRedirectUrl %>"
@@ -53,9 +54,15 @@
                 <button type="submit"class="btn btn-primary">Submit</button>
               </div>
             </form>
+            <p class="italic text-center mt-4">
+              Don't have an account?
+            </p>
+            <a href="/signup" class="link link-accent text-center">
+               Register here
+            </a>
           </div>
         </div>
-      </article>
+      </main>
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", function () {

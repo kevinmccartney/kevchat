@@ -14,7 +14,7 @@ export default async function Home() {
   const isAuthenticated = !!cookieStore.get("kevchat_access_token");
 
   return (
-    <section className="flex flex-col h-full">
+    <section className="flex flex-col h-screen overflow-hidden">
       <Header isAuthenticated={isAuthenticated} />
       <Chat websocketAddress={process.env.KEVCHAT_API_URL as string} />
       <Footer />

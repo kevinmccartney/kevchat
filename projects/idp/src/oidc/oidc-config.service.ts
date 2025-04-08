@@ -62,30 +62,47 @@ export class OidcConfigService implements OidcModuleOptionsFactory {
           logoutSource: async (ctx, form) => {
             const cancelRedirectUri = ctx.query.logout_cancel_redirect_uri;
             ctx.body = `<!DOCTYPE html>
-              <html>
-                <head>
-                  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                  <meta charset="utf-8">
-                  <title>Kevchat Identity | Logout Request</title>
-                  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-                  <link href="/app.css" rel="stylesheet" type="text/css" />
-                </head>
-                <body>
-                   <div class="h-full w-full flex flex-col justify-center items-center bg-base-300">
-                    <article class="prose">
-                      <h1 class="text-center">KevChat Identity</h1>
-                      <div class="card card-dash bg-base-100">
-                        <div class="card-body">
-                          <h2 class="mt-0 mb-3">Do you want to logout?</h2>
-                            ${form}
-                            <button class="btn btn-primary mb-2" autofocus type="submit" form="op.logoutForm" value="yes" name="logout">Yes, log me out</button>
-                            <a class="btn btn-accent btn-outline" href=${cancelRedirectUri}>No, stay logged in</a>
-                        </div>
+             <html>
+              <head>
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <meta charset="utf-8" />
+                <title>Kevchat Identity | Logout Request</title>
+                <meta
+                  name="viewport"
+                  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+                />
+                <link href="/app.css" rel="stylesheet" type="text/css" />
+              </head>
+              <body>
+                <div
+                  class="min-h-screen w-full flex flex-col justify-center items-center bg-base-300"
+                >
+                  <main class="py-12">
+                    <h1 class="text-center text-3xl mb-4">KevChat Identity</h1>
+                    <div class="card card-dash bg-base-100 min-w-80">
+                      <div class="card-body">
+                        <h2 class="text-2xl mb-3">Do you want to logout?</h2>
+                        ${form}
+                        <button
+                          class="btn btn-primary mb-2"
+                          autofocus
+                          type="submit"
+                          form="op.logoutForm"
+                          value="yes"
+                          name="logout"
+                        >
+                          Yes, log me out
+                        </button>
+                        <a class="btn btn-accent btn-outline" href="${cancelRedirectUri}"
+                          >No, stay logged in</a
+                        >
                       </div>
-                   
-                  </div>
-                </body>
-              </html>`;
+                    </div>
+                  </main>
+                </div>
+              </body>
+            </html>
+            `;
           },
         },
       },
