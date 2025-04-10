@@ -143,13 +143,13 @@ export class OidcConfigService implements OidcModuleOptionsFactory {
             </head>
             <body>
               <div
-                class="w-full h-full flex flex-col justify-center items-center bg-base-300"
+                class="w-screen min-h-screen flex flex-col justify-center items-center bg-base-300"
               >
-                <article class="prose">
-                  <h1 class="text-center">KevChat Identity</h1>
-                  <div class="card card-dash bg-base-100 w-96">
+                <main class="py-12">
+                  <h1 class="text-center text-3xl mb-4">KevChat Identity</h1>
+                  <div class="card card-dash bg-base-100 min-w-80">
                     <div class="card-body">
-                      <h2 class="mt-0 mb-3">We hit an error:</h2>
+                      <h2 class="text-2xl mb-3">We hit an error:</h2>
                       <div
                         role="alert"
                         class="alert alert-error alert-soft flex flex-col gap-0 items-start"
@@ -165,7 +165,7 @@ export class OidcConfigService implements OidcModuleOptionsFactory {
                       <p class="mb-0">Please close this window & try again later.</p>
                     </div>
                   </div>
-                </article>
+                </main>
               </div>
             </body>
           </html>

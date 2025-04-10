@@ -15,6 +15,7 @@ module.exports = {
     },
   },
   plugins: [daisyui],
+  safelist: ['items-start'],
   daisyui: {
     themes: ['light', 'dark'],
   },

@@ -83,8 +83,10 @@ const MOCK_CHAT_MESSAGES: ChatMessage[] = [
 
 export default function Chat({
   websocketAddress,
+  additionalClasses,
 }: {
   websocketAddress: string;
+  additionalClasses?: string;
 }) {
   const { socket } = useSocket(websocketAddress);
   const [messages, setMessages] = useState(MOCK_CHAT_MESSAGES);
@@ -172,72 +174,46 @@ export default function Chat({
   }
 
   return (
-    <>
-      <div className="bg-base-300 flex-grow flex overflow-hidden">
-        <div className="container mx-auto max-w-7xl flex">
-          <div className="hidden lg:flex flex-col flex-none w-1/4 h-full bg-base-200 rounded-lg p-4">
-            <h2 className="text-xl font-bold">Conversations</h2>
-            <ul className="menu w-full">
-              <li>
-                <div className="flex flex-row gap-2 items-center">
-                  <div className="chat-image avatar">
-                    <div className="w-10 rounded-full">
-                      <Image
-                        src={USERS['2'].avatarUrl}
-                        alt={`Profile pic for ${USERS['2'].name}`}
-                        width={60}
-                        height={60}
-                      />
-                    </div>
-                  </div>
-                  <p>{USERS['2'].name}</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div className="px-11 py-6 flex-grow flex flex-col gap-3 overflow-y-scroll">
-            {messages.map((message: ChatMessage, index: number) => (
-              <div
-                className={`chat ${message.type === 'incoming' ? 'chat-start' : 'chat-end'}`}
-                key={index}
-              >
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <Image
-                      src={message.user.avatarUrl}
-                      alt={`Profile pic for ${message.user.name}`}
-                      width={60}
-                      height={60}
-                    />
-                  </div>
-                </div>
-                <div className="chat-header mb-1">
-                  {message.user.name}
-                  <time
-                    suppressHydrationWarning={true}
-                    className="ml-1 text-xs opacity-50"
-                  >
-                    {formatDate(message.sentAt)}
-                  </time>
-                </div>
-                <div
-                  className={`chat-bubble ${message.type === 'outgoing' ? 'chat-bubble-primary' : 'chat-bubble-secondary'}`}
-                >
-                  {message.message}
-                </div>
+    <div className={`h-full flex flex-col ${additionalClasses}`}>
+      <div className="p-6 flex flex-col gap-3 overflow-scroll">
+        {messages.map((message: ChatMessage, index: number) => (
+          <div
+            className={`chat ${message.type === 'incoming' ? 'chat-start' : 'chat-end'}`}
+            key={index}
+          >
+            <div className="chat-image avatar">
+              <div className="w-10 rounded-full">
+                <Image
+                  src={message.user.avatarUrl}
+                  alt={`Profile pic for ${message.user.name}`}
+                  width={60}
+                  height={60}
+                />
               </div>
-            ))}
-            <div id="scroll-anchor" className="h-0" ref={bottomRef}></div>
+            </div>
+            <div className="chat-header mb-1">
+              {/* {message.user.name} */}
+              <time
+                suppressHydrationWarning={true}
+                className="ml-1 text-xs opacity-50"
+              >
+                {formatDate(message.sentAt)}
+              </time>
+            </div>
+            <div
+              className={`chat-bubble ${message.type === 'outgoing' ? 'chat-bubble-primary' : 'chat-bubble-secondary'}`}
+            >
+              {message.message}
+            </div>
           </div>
-        </div>
+        ))}
+        <div id="scroll-anchor" className="h-0" ref={bottomRef}></div>
       </div>
-      <div className="px-11 flex flex-col">
-        <textarea
-          onKeyDown={handleKeydown}
-          className="textarea textarea-bordered w-full mt-6"
-          placeholder="Type your message here"
-        ></textarea>
-      </div>
-    </>
+      <textarea
+        onKeyDown={handleKeydown}
+        className="textarea textarea-bordered w-full mt-6"
+        placeholder="Type your message here"
+      ></textarea>
+    </div>
   );
 }

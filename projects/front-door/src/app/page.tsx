@@ -15,7 +15,7 @@ export default function Home() {
           <h1 className="text-4xl mb-8">
             Welcome to <span className="text-primary">KevChat</span>!
           </h1>
-          <h2 className="mt-0">
+          <h2 className="text-xl mb-6">
             The world&apos;s first chat for{' '}
             <span className="text-primary">Kevins</span> only.
           </h2>

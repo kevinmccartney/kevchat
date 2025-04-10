@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
+import Link from "next/link";
 
 type HeaderProps = {
   isAuthenticated: boolean;
@@ -7,18 +8,18 @@ type HeaderProps = {
 
 export default function Header(props: HeaderProps) {
   return (
-    <div className="navbar px-7 bg-base-100">
-      <div className="container mx-auto max-w-7xl">
+    <div className="navbar bg-base-100">
+      <div className="container mx-auto max-w-7xl flex justify-between items-center">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl border-0" href="/">
+          <Link className="btn btn-ghost text-xl border-0" href="/">
             <span className="ri-chat-smile-2-fill text-primary text-4xl"></span>
             KevChat
-          </a>
+          </Link>
         </div>
         <div className="flex-none">
           {!props.isAuthenticated && <ThemeToggle />}
           {props.isAuthenticated && (
-            <div className="dropdown">
+            <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}
                 className="btn bg-transparent hover:bg-transparent border-0 hover:border-0 flex content-center"
@@ -49,7 +50,7 @@ export default function Header(props: HeaderProps) {
                 <li className="mb-2">
                   <a href={process.env.KEVCHAT_CLIENT_LOGOUT_URL}>Log out</a>
                 </li>
-                <li className="">
+                <li>
                   <ThemeToggle />
                 </li>
               </ul>

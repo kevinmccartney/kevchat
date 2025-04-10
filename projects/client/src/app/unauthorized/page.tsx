@@ -13,9 +13,9 @@ export default async function Home() {
   return (
     <section className="flex flex-col h-full">
       <Header isAuthenticated={isLoggedIn} />
-      <div className="flex-grow flex-col bg-base-300 flex items-center justify-center prose min-w-full p-4">
-        <h1>Unauthorized</h1>
-        <p className="mt-0">You are not authorized to see this page.</p>
+      <div className="flex-grow flex-col bg-base-300 flex items-center justify-center min-w-full p-4 gap-4">
+        <h1 className="text-3xl">Unauthorized</h1>
+        <p>You are not authorized to see this page.</p>
         <a
           href={process.env.KEVCHAT_CLIENT_LOGIN_URL}
           className="btn btn-primary"
@@ -23,7 +23,7 @@ export default async function Home() {
           Login
         </a>
         <a href={process.env.KEVCHAT_FRONT_DOOR_URL} className="text-accent mt-4">
-          Go back to Home
+          Go back Home
         </a>
       </div>
       <Footer />

@@ -5,12 +5,16 @@
 ### V1
 
 - [ ] Can I use a middleware/session to manage the cancel link (on login)?
-  - [ ] Add signup and cancel link to login
+  - [ ] Add signup, login, & cancel links to login
+    - [ ] Use sesssion, degrade gracefully
+    - [ ] Validate signup and cancel links against conf list
 - [ ] Splash page link should be login
-- [ ] Mobile cleanup
-  - [ ] Tear out all that prose BS, just wing it on type sizes
+- [ ] Seed Kevins into the DB
 - [ ] Set up rooms on backend & UI
 - [ ] Consolidate dockerfiles
+- [ ] Save theme options to localhost
+
+  - [ ] Or server-side? Settings API?
 
 - [ ] Write more validation for user create endpoint
 - [ ] Use Nest logger for all logging
@@ -59,6 +63,17 @@
 
 ## Done
 
+- [x] Look @ styles on desktop
+  - [x] Finish up desktop chat layout
+- [x] Mobile cleanup/layout
+  - [x] Look at idp renderError page
+- [x] Mobile menu
+- [x] Make sure menu isn't going off-screen
+- [x] Frontdoor is messed up
+- [x] Look at app unauthed page
+- [x] Tear out all that prose BS, just wing it on type sizes
+- [x] Figure out why dark theme text colors are different between idp and client
+- [x] Normalize versions
 - [x] List of convos
 - [x] Make commit
 - [x] Write chat websocket API
