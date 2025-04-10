@@ -76,6 +76,18 @@ services:
       - type: bind
         source: ./projects/scripts
         target: /app
+  seed_mongodb:
+    image: node:22
+    command: sh -c 'cd /app && npm i && node seed-kevins.js'
+    environment:
+      - MONGO_CONN_STRING=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:${MONGO_PORT}
+    volumes:
+      - type: bind
+        source: ./projects/scripts
+        target: /app
+    depends_on:
+      init_mongodb:
+        condition: service_completed_successfully
   kevchat_api:
     build:
       context: .
@@ -84,7 +96,7 @@ services:
     depends_on:
       init_kafka:
         condition: service_completed_successfully
-      init_mongodb:
+      seed_mongodb:
         condition: service_completed_successfully
     ports:
       - ${KEVCHAT_API_DEBUG_PORT}:${KEVCHAT_API_DEBUG_PORT}
@@ -196,7 +208,7 @@ services:
     depends_on:
       init_kafka:
         condition: service_completed_successfully
-      init_mongodb:
+      seed_mongodb:
         condition: service_completed_successfully
     healthcheck:
       test:

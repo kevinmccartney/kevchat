@@ -4,8 +4,12 @@
 
 ### V1
 
-- [ ] Seed Kevins into the DB
-- [ ] Set up rooms on backend & UI
+- [ ] Conversations
+  - [ ] Seed initial conversations
+  - [ ] Conversation service
+  - [ ] Conversation endpoints
+  - [ ] Start conversation (with users you don't have a conversation with yet)
+  - [ ] Websocket updates to conversation
 - [ ] Consolidate dockerfiles
 - [ ] Save theme options to localhost
 
@@ -20,7 +24,7 @@
 - [ ] Implement at least once delivery for WebSocket messages
 - [ ] Add more validation around user_upsert kafka handler API (validate the input)
 - [ ] Allow login with email
-- [ ] Write UI user profile
+- [ ] Write UI for user profile
 - [ ] Use Redis or memcache instead of mongo for IDP sessions
 - [ ] Implement PKCE for OIDC on IDP server
 - [ ] Figure out handling of nginx errors (backend unreachable due to compile error 502 bad gateway)
@@ -36,7 +40,10 @@
 - [ ] Switch favicon for light mode
 - [ ] CI/CD pipeline
 - [ ] Tests (ESP E2E for IDP)
-- [ ] Can I get XXS'd/other security vuln with the idp signin query params? (the answer is almost definitely yes)
+- [ ] Can I get XXS'd/other security vuln with the idp login/signin query params?
+- [ ] Upload profile pics
+- [ ] Friend requests (IE you can only chat with friends)
+- [ ]
 
 ### V2
 
@@ -58,6 +65,7 @@
 
 ## Done
 
+- [x] Seed Kevins into the DB
 - [x] Can I use a middleware/session to manage the cancel link (on login)?
   - [x] Add signup, login, & cancel links to login
     - [x] Use session, degrade gracefully
