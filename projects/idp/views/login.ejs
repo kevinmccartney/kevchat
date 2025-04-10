@@ -43,9 +43,9 @@
                 </div>
               <% } %>
               <div class="flex gap-4 justify-end">
-                <% if (typeof cancelRedirectUrl !== 'undefined') { %>
+                <% if (typeof cancelRedirect !== 'undefined') { %>
                   <a
-                    href="<%= cancelRedirectUrl %>"
+                    href="<%= cancelRedirect %>"
                     class="btn btn-outline btn-accent"
                   >
                     Cancel
@@ -57,7 +57,7 @@
             <p class="italic text-center mt-4">
               Don't have an account?
             </p>
-            <a href="/signup" class="link link-accent text-center">
+            <a href="/signup?cancelRedirect=<%= cancelRedirect %>&oidcAuthRedirect=<%= oidcAuthRedirect %>" class="link link-accent text-center">
                Register here
             </a>
           </div>

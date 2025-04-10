@@ -42,11 +42,72 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Get('login')
   async login(@Req() req: ExpressRequest, @Res() res: ExpressResponse) {
-    req.session.cancelRedirect = req.query.cancelRedirect as string;
+    if (!req.query.oidcAuthRedirect) {
+      return res.status(400).render('error', {
+        errorMessage: 'Missing oidc auth redirect URL',
+      });
+    }
 
-    return res.status(200).json({
-      message: 'Login successful',
-    });
+    function isUrlOnDomain(
+      urlString: string,
+      allowedDomains: string[],
+    ): boolean {
+      try {
+        const url = new URL(urlString);
+        const hostname = url.hostname;
+
+        return allowedDomains.some(
+          (domain) => hostname === domain || hostname.endsWith(`.${domain}`),
+        );
+      } catch {
+        return false;
+      }
+    }
+
+    const allowedCancelRedirectDomains =
+      process.env.KEVCHAT_IDP_ALLOWED_CANCEL_REDIRECT_DOMAINS?.split(',') || [];
+    const allowedOidcAuthRedirectDomains =
+      process.env.KEVCHAT_IDP_ALLOWED_OIDC_AUTH_REDIRECT_DOMAINS?.split(',') ||
+      [];
+    const allowedSignupRedirectDomains =
+      process.env.KEVCHAT_IDP_ALLOWED_SIGNUP_REDIRECT_DOMAINS?.split(',') || [];
+
+    const cancelRedirectIsAllowed = isUrlOnDomain(
+      decodeURIComponent((req.query.cancelRedirect as string) ?? ''),
+      allowedCancelRedirectDomains,
+    );
+    const oidcAuthRedirectIsAllowed = isUrlOnDomain(
+      decodeURIComponent((req.query.oidcAuthRedirect as string) ?? ''),
+      allowedOidcAuthRedirectDomains,
+    );
+    const signupRedirectIsAllowed = isUrlOnDomain(
+      decodeURIComponent((req.query.signupRedirect as string) ?? ''),
+      allowedSignupRedirectDomains,
+    );
+
+    if (
+      !cancelRedirectIsAllowed ||
+      !oidcAuthRedirectIsAllowed ||
+      !signupRedirectIsAllowed
+    ) {
+      return res.status(400).render('error', {
+        errorMessage: 'Invalid redirect URL',
+      });
+    }
+
+    req.session.cancelRedirect = decodeURIComponent(
+      req.query.cancelRedirect as string,
+    );
+    req.session.signupRedirect = decodeURIComponent(
+      req.query.signupRedirect as string,
+    );
+    req.session.oidcAuthRedirect = decodeURIComponent(
+      req.query.oidcAuthRedirect as string,
+    );
+
+    req.session.save();
+
+    return res.status(302).redirect(req.session.oidcAuthRedirect as string);
   }
 
   @HttpCode(HttpStatus.OK)
@@ -54,7 +115,7 @@ export class AuthController {
   async logout(@Req() req: ExpressRequest, @Res() res: ExpressResponse) {
     console.log(req.session.cancelRedirect);
 
-    return res.status(2000).json({
+    return res.status(200).json({
       message: 'Logout successful',
     });
   }

@@ -23,15 +23,20 @@ export class SignupController {
     @Response() res: ExpressResponse,
     @Request() req: ExpressRequest,
   ) {
-    const { cancelRedirectUrl, successRedirectUrl } = req.query;
-    if (!successRedirectUrl) {
+    const cancelRedirect =
+      req.session.cancelRedirect ?? req.query.cancelRedirect;
+    const oidcAuthRedirect =
+      req.session.oidcAuthRedirect ?? req.query.oidcAuthRedirect;
+
+    if (!oidcAuthRedirect) {
       return res.status(400).render('error', {
-        errorMessage: 'Missing success redirect URL',
+        errorMessage: 'Missing oidc auth redirect URL',
       });
     }
+
     return res.status(200).render('signup', {
-      successRedirectUrl: successRedirectUrl,
-      cancelRedirectUrl: cancelRedirectUrl ?? null,
+      oidcAuthRedirect: oidcAuthRedirect,
+      cancelRedirectUrl: cancelRedirect ?? null,
     });
   }
 

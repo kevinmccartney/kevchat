@@ -9,5 +9,7 @@ declare module 'express-session' {
   interface SessionData {
     user?: { id: number; name: string };
     cancelRedirect?: string;
+    signupRedirect?: string;
+    oidcAuthRedirect?: string;
   }
 }

@@ -4,11 +4,6 @@
 
 ### V1
 
-- [ ] Can I use a middleware/session to manage the cancel link (on login)?
-  - [ ] Add signup, login, & cancel links to login
-    - [ ] Use sesssion, degrade gracefully
-    - [ ] Validate signup and cancel links against conf list
-- [ ] Splash page link should be login
 - [ ] Seed Kevins into the DB
 - [ ] Set up rooms on backend & UI
 - [ ] Consolidate dockerfiles
@@ -63,6 +58,11 @@
 
 ## Done
 
+- [x] Can I use a middleware/session to manage the cancel link (on login)?
+  - [x] Add signup, login, & cancel links to login
+    - [x] Use session, degrade gracefully
+    - [x] Validate signup and cancel links against conf list
+- [x] Splash page link should be login
 - [x] Look @ styles on desktop
   - [x] Finish up desktop chat layout
 - [x] Mobile cleanup/layout

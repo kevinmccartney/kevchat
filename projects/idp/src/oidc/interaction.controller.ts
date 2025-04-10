@@ -5,6 +5,7 @@ import {
   Inject,
   Logger,
   Post,
+  Req,
   Response,
 } from '@nestjs/common';
 import {
@@ -13,7 +14,10 @@ import {
   OidcInteraction,
   Provider,
 } from 'nest-oidc-provider';
-import { Response as ExpressResponse } from 'express';
+import {
+  Response as ExpressResponse,
+  Request as ExpressRequest,
+} from 'express';
 import { pbkdf2, timingSafeEqual } from 'crypto';
 import { promisify } from 'util';
 
@@ -32,9 +36,11 @@ export class InteractionController {
   async doInteraction(
     @OidcInteraction() interaction: InteractionHelper,
     @Response() res: ExpressResponse,
+    @Req() req: ExpressRequest,
   ) {
     try {
       const { prompt, params, uid } = await interaction.details();
+      const { cancelRedirect, oidcAuthRedirect, signupRedirect } = req.session;
       const client = await this.provider.Client.find(
         params.client_id as string,
       );
@@ -45,6 +51,9 @@ export class InteractionController {
         params,
         uid,
         errorMessage: null,
+        cancelRedirect: cancelRedirect ?? null,
+        oidcAuthRedirect: oidcAuthRedirect ?? null,
+        signupRedirect: signupRedirect ?? null,
       });
     } catch (err) {
       console.error('Error while getting interaction', err);
